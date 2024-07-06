@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('device', function (Blueprint $table) {
+        Schema::create('devices', function (Blueprint $table) {
             $table->uuid('id')->primary()->unique();
             $table->char('kode_puskesmas', 3);
             $table->timestamps();

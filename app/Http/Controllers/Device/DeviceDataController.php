@@ -22,7 +22,7 @@ class DeviceDataController extends Controller
         $measure = Data::create(
             [
                 'dev_id' => $request->id,
-                'suhu' => $request->suhu,
+                'gula' => $request->gula,
                 'berat' => $request->berat,
                 'tinggi' => $request->tinggi,
                 'updated_at' => Carbon::now()

@@ -13,7 +13,7 @@ class Data extends Model
 
     protected $fillable = [
         'dev_id',
-        'suhu',
+        'gula',
         'berat',
         'tinggi'
     ];

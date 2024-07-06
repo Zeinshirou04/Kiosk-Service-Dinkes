@@ -25,7 +25,7 @@ class ConfirmJsonContentType
         ], 415);
         $cols = [
             'id',
-            'suhu',
+            'gula',
             'berat',
             'tinggi',
         ];
@@ -36,7 +36,7 @@ class ConfirmJsonContentType
         try {
             $credentials = $request->validate([
                 'id' => 'required|uuid',
-                'suhu' => 'required|numeric|between:0,99.9',
+                'gula' => 'required|numeric|between:0,999.9',
                 'berat' => 'required|numeric|between:0,999.9',
                 'tinggi' => 'required|numeric|between:0,999.9',
             ]);

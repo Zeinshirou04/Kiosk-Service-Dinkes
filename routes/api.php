@@ -7,7 +7,7 @@ use App\Http\Controllers\Device\DeviceDataController;
 
 Route::middleware([ConfirmJsonContentType::class])->group(function () {
     Route::apiResource('device', DeviceDataController::class)->except([
-        'index', 'create'
+        'index', 'create', 'edit', 'update', 'destroy'
     ]);
 });
 

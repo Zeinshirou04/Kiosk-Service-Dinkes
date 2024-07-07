@@ -11,21 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('devices', function (Blueprint $table) {
-            $table->uuid('id')->primary()->unique();
-            $table->char('kode_puskesmas', 3);
-            $table->timestamps();
-
-            $table->index('id', 'dev_id');
-        });
-
-        Schema::create('d_data', function(Blueprint $table) {
+        Schema::create('measure', function (Blueprint $table) {
             $table->id();
-            $table->foreignUuid('dev_id')->references('id')->on('devices');
+            $table->char('nik', 16);
             $table->decimal('gula', 4, 1)->default(0.0);
             $table->decimal('berat', 4, 1)->default(0.0);
             $table->decimal('tinggi', 4, 1)->default(0.0);
+            $table->foreignUuid('dev_id')->references('id')->on('devices');
             $table->timestamps();
+
+            $table->foreign('nik')->references('nik')->on('patients');
         });
     }
 
@@ -34,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('device');
+        Schema::dropIfExists('measure');
     }
 };

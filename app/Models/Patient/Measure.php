@@ -1,24 +1,23 @@
 <?php
 
-namespace App\Models\Device;
+namespace App\Models\Patient;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Data extends Model
+class Measure extends Model
 {
     use HasFactory;
 
-    protected $table = 'd_data';
-
     protected $fillable = [
-        'dev_id',
+        'nik',
         'gula',
         'berat',
-        'tinggi'
+        'tinggi',
+        'dev_id'
     ];
-    
-    public function device() {
-        return $this->belongsTo('devices');
+
+    public function patients() {
+        return $this->belongsTo('patients');
     }
 }

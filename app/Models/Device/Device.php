@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Device extends Model
 {
     use HasFactory;
+
+    public function measure() {
+        return $this->hasMany('measure');
+    }
+
+    public function data() {
+        return $this->hasMany('d_data');
+    }
 }

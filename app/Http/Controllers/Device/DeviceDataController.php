@@ -49,30 +49,20 @@ class DeviceDataController extends Controller
      */
     public function show(string $id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        try {
+            $data = [
+                'status' => 'berhasil!',
+                'data' => Data::where('dev_id', $id)
+                    ->orderBy('created_at', 'desc')
+                    ->first()
+                    ->toArray()
+            ];
+        } catch (\Throwable $th) {
+            $data = [
+                'status' => 'data tidak ditemukan',
+                'data' => 'null',
+            ];
+        }
+        return response()->json($data);
     }
 }

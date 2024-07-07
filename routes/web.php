@@ -1,18 +1,24 @@
 <?php
 
+use App\Http\Controllers\Home\MenuController;
+use App\Http\Controllers\Patient\Umum\PatientRegisterController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
+Route::get('/', [MenuController::class, 'index'])->name('menu.index');
+
+Route::prefix('umum')->group(function () {
+    Route::get('/', [MenuController::class, 'umum'])->name('menu.umum');
+    Route::resource('/pendaftaran', PatientRegisterController::class)->only([
+        'create', 'store'
     ]);
 });
+
+Route::get('/bpjs', [MenuController::class, 'bpjs'])->name('menu.bpjs');
+Route::get('/asuransi', [MenuController::class, 'asuransi'])->name('menu.asuransi');
+Route::get('/lansia', [MenuController::class, 'lansia'])->name('menu.lansia');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

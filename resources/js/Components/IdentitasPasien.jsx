@@ -8,7 +8,7 @@ export default function Identitas({ data }) {
                             <th className="pt-2 pl-3 pb-2 pr-2">NIK</th>
                             <td className="pt-2 pb-2 pr-8">: {data.nik}</td>
                             <th className="pt-2 pb-2 pr-2">No. HP</th>
-                            <td className="pt-2 pb-2 pr-3">: {data.no_hp}</td>
+                            <td className="pt-2 pb-2 pr-3">: +62{data.no_hp}</td>
                         </tr>
                         <tr className="border-b-2">
                             <th className="pt-2 pl-3 pb-2 pr-2">Nama</th>

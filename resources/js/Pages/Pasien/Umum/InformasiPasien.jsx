@@ -53,7 +53,7 @@ export default function Pasien({ pasien, rekap, data }) {
                                 </div>
                             </div>
                             <div className="w-full max-w-full h-60 overflow-x-auto overflow-y-auto mt-2">
-                                <table className="min-w-full min-h-full text-nowrap text-left">
+                                <table className="min-w-full text-nowrap text-left">
                                     <thead>
                                         <tr className="border-b-2 border-b-gray-200 bg-gray-600 text-white">
                                             <th className="px-4 py-1 border-r-2 border-r-gray-500">

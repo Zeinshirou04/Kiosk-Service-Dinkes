@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Home\MenuController;
+use App\Http\Controllers\Patient\Umum\PatientInformationController;
+use App\Http\Controllers\Patient\Umum\PatientMeasureController;
 use App\Http\Controllers\Patient\Umum\PatientRegisterController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -14,6 +16,12 @@ Route::prefix('umum')->group(function () {
     Route::resource('/pendaftaran', PatientRegisterController::class)->only([
         'create', 'store'
     ]);
+    Route::resource('/pengukuran', PatientMeasureController::class)->only([
+        'create', 'store', 'show'
+    ]);
+    Route::get('/cari', [PatientInformationController::class, 'index'])->name('pasien.cari');
+    Route::post('/cari', [PatientInformationController::class, 'find'])->name('pasien.encrypt');
+    Route::get('/pasien/{hash}', [PatientInformationController::class, 'show'])->name('pasien.index');
 });
 
 Route::get('/bpjs', [MenuController::class, 'bpjs'])->name('menu.bpjs');

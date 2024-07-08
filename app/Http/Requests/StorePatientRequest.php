@@ -11,7 +11,7 @@ class StorePatientRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,17 @@ class StorePatientRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        // dd(FormRequest::capture());
+        return
+            [
+                'nik' => 'required|numeric|digits:16',
+                'nama_pasien' => 'required|string',
+                'tgl_lahir' => 'required|date',
+                'umur' => 'required|numeric|digits_between:1,3',
+                'tempat_lahir' => 'required|string',
+                'alamat' => 'required|string',
+                'no_hp' => 'required|numeric|digits_between:12,13',
+                'jenis_kelamin' => 'required|regex:/^.{1}$/'
+            ];
     }
 }

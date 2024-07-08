@@ -9,12 +9,16 @@ class Measure extends Model
 {
     use HasFactory;
 
+    protected $table = 'measure';
+
     protected $fillable = [
         'nik',
         'gula',
         'berat',
         'tinggi',
-        'dev_id'
+        'dev_id',
+        'created_at',
+        'updated_at',
     ];
 
     public function patients() {

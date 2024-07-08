@@ -23,7 +23,7 @@ export default function NavAside({}) {
                         <NavLink
                             href={route("menu.umum")}
                             className="font-bold text-lg"
-                            active={route().current("menu.umum") || route().current('pendaftaran.*')}
+                            active={route().current("menu.umum") || route().current('pendaftaran.*') || route().current('pasien.*')}
                         >
                             Pasien Umum
                         </NavLink>

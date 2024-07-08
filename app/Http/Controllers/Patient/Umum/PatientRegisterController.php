@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Patient\Umum;
 
 use App\Http\Controllers\Controller;
-use App\Models\Patient;
 use App\Http\Requests\StorePatientRequest;
-use App\Http\Requests\UpdatePatientRequest;
+use App\Models\Patient\Patients;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class PatientRegisterController extends Controller
@@ -19,10 +20,17 @@ class PatientRegisterController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Handle an incoming registration request.
+     *
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(StorePatientRequest $request)
     {
-        //
+        try {
+            Patients::create($request->all());
+            return redirect(route('pengukuran.create'));
+        } catch (\Throwable $th) {
+            throw $th;
+        }
     }
 }

@@ -32,7 +32,7 @@ export default function Umum({}) {
                                     Belum
                                 </button>
                             </Link>
-                            <Link href={route("pendaftaran.store")}>
+                            <Link href={route("pasien.cari")}>
                                 <button className="px-8 py-4 bg-green-600 text-white rounded-xl text-xl">
                                     Sudah
                                 </button>

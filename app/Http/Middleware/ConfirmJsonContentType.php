@@ -16,7 +16,7 @@ class ConfirmJsonContentType
     public function handle(Request $request, Closure $next): Response
     {
         // return response()->json($request->header('User-Agent'));
-        if ($request->isMethod('get') && ($request->header('User-Agent') == "PostmanRuntime/7.39.0" || $request->header('User-Agent') == "Axios")) return $next($request);
+        if ($request->isMethod('get')) return $next($request);
         if (!$request->isMethod('post')) return response()->json([
             'message' => 'Method is not accepted, please re-check your method!'
         ], 405);

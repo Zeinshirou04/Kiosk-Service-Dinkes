@@ -1,1 +1,0 @@
-import{j as s,a as r}from"./app-2bShOhEi.js";function n({active:a=!1,className:D="",children:e,...o}){return s.jsx(r,{className:"w-full",...o,children:s.jsx("button",{className:"w-full py-5 px-6 duration-150 rounded-xl "+D+(a?" bg-[#DDEEDF]/60":" bg-[#DDEEDF] hover:bg-[#DDEEDF]/90 focus:bg-[#DDEEDF]"),children:e})})}export{n as N};

@@ -7,6 +7,7 @@ use App\Http\Requests\StorePatientRequest;
 use App\Models\Patient\Patients;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Inertia\Inertia;
 
 class PatientRegisterController extends Controller
@@ -28,7 +29,8 @@ class PatientRegisterController extends Controller
     {
         try {
             Patients::create($request->all());
-            return redirect(route('pengukuran.create'));
+            $hash = Crypt::encrypt($request->nik);
+            return redirect(route('pasien.index', $hash));
         } catch (\Throwable $th) {
             throw $th;
         }

@@ -102,7 +102,7 @@ export default function Pasien({ pasien, rekap, data }) {
                                                 </td>
                                             </tr>
                                         )) : (<tr>
-                                            <td className="px-4 py-2 border-r-2 border-r-gray-500 text-center" colSpan={5}>Belum ada pengukuran</td>
+                                            <td className="px-4 py-2 border-r-2 border-r-gray-500 text-center" rowSpan={6} colSpan={5}>Belum ada pengukuran</td>
                                         </tr>)}
                                     </tbody>
                                 </table>

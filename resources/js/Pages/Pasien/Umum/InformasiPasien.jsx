@@ -4,14 +4,14 @@ import NavAside from "@/Components/AsideMenu";
 import Identitas from "@/Components/IdentitasPasien";
 import Glukosa from "@/Components/FormPengukuranGlukosa";
 import Tensi from "@/Components/FormPengukuranTensi";
-import { FileforgeClient } from "@fileforge/client";
-import { compile } from "@fileforge/react-print";
-import Raport from "@/Others/Pdf/Raport";
+// import { FileforgeClient } from "@fileforge/client";
+// import { compile } from "@fileforge/react-print";
+// import Raport from "@/Others/Pdf/Raport";
 
 export default function Pasien({ pasien, rekap, tensi }) {
-    const ff = new FileforgeClient({
-        apiKey: () => "f1d0be55-c5d6-44c8-bbeb-2e76a2327fe8",
-    });
+    // const ff = new FileforgeClient({
+    //     apiKey: () => "f1d0be55-c5d6-44c8-bbeb-2e76a2327fe8",
+    // });
 
     let d = {
         nama: pasien.nama_pasien,
@@ -20,27 +20,27 @@ export default function Pasien({ pasien, rekap, tensi }) {
     };
 
     const printPdf = async () => {
-        await import("react-dom/server");
-        const HTML = await compile(<Raport data={d} />);
-        try {
-            const pdf = await ff.pdf.generate(
-                [new File([HTML], "index.html", { type: "text/html" })],
+        // await import("react-dom/server");
+        // const HTML = await compile(<Raport data={d} />);
+        // try {
+        //     const pdf = await ff.pdf.generate(
+        //         [new File([HTML], "index.html", { type: "text/html" })],
 
-                {
-                    options: {
-                        host: true,
-                    },
-                },
+        //         {
+        //             options: {
+        //                 host: true,
+        //             },
+        //         },
 
-                {
-                    timeoutInSeconds: 30,
-                }
-            );
+        //         {
+        //             timeoutInSeconds: 30,
+        //         }
+        //     );
 
-            console.log(pdf.url);
-        } catch (error) {
-            console.error("Error during PDF conversion:", error);
-        }
+        //     console.log(pdf.url);
+        // } catch (error) {
+        //     console.error("Error during PDF conversion:", error);
+        // }
     };
 
     console.log(ff.getStatus());

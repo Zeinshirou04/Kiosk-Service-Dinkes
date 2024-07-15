@@ -1,7 +1,7 @@
 import { useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 
-export default function Pengukuran({ nik, active, setActive }) {
+export default function Glukosa({ nik, active, setActive }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         nik: 0,
         gula: 0,

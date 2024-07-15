@@ -20,30 +20,6 @@ export default function DaftarPasien({ csrfToken, session }) {
         event.preventDefault();
 
         post(route("pendaftaran.store"));
-
-        // const formData = {
-        //     // _token: csrfToken,
-        //     nik: event.target.nik.value,
-        //     nama: event.target.nama.value,
-        //     tglLahir: event.target.tglLahir.value,
-        //     tempatLahir: event.target.tempatLahir.value,
-        //     alamat: event.target.alamat.value,
-        //     no_hp: event.target.no_hp.value,
-        //     kelamin: event.target.kelamin.value,
-        // };
-
-        // try {
-        //     const response = await axios.post(
-        //         route("pendaftaran.store"),
-        //         formData
-        //     );
-
-        //     // Assuming your backend returns a success message or status
-        //     console.log("Form submitted successfully", response.data);
-        //     window.location.href = route("menu.umum");
-        // } catch (error) {
-        //     console.error("Error submitting form", error);
-        // }
     };
 
     return (

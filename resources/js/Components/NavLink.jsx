@@ -5,7 +5,7 @@ export default function NavLink({ active = false, className = "", children, ...p
         <Link className="w-full" {...props}>
             <button
                 className={
-                    "w-full py-5 px-6 duration-150 rounded-xl " +
+                    "w-full py-5 px-6 duration-150 rounded-md " +
                     className  + (active ? " bg-[#DDEEDF]/60" : " bg-[#DDEEDF] hover:bg-[#DDEEDF]/90 focus:bg-[#DDEEDF]")
                 }
             >

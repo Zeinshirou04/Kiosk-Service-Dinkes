@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Patient\Umum;
 
 use App\Http\Controllers\Controller;
 use App\Models\Patient\Measure;
+use App\Models\Patient\MeasureTension;
 use App\Models\Patient\Patients;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -35,7 +36,8 @@ class PatientInformationController extends Controller
         $nik = Crypt::decrypt($hash);
         $data = [
             'pasien' => Patients::where('nik', $nik)->first()->toArray(),
-            'rekap' => Measure::where('nik', $nik)->orderBy('created_at', 'desc')->get()
+            'rekap' => Measure::where('nik', $nik)->orderBy('created_at', 'desc')->get(),
+            'tensi' => MeasureTension::where('nik', $nik)->orderBy('created_at', 'desc')->get()
         ];
         // dd($data);
         return Inertia::render('Pasien/Umum/InformasiPasien', $data);

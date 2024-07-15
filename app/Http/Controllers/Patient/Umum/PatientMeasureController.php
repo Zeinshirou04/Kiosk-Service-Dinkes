@@ -7,6 +7,8 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 use App\Models\Patient\Measure;
 use App\Http\Controllers\Controller;
+use App\Models\Patient\MeasureTension;
+use App\Models\Patient\Tension;
 use Illuminate\Support\Facades\Crypt;
 
 class PatientMeasureController extends Controller
@@ -25,12 +27,28 @@ class PatientMeasureController extends Controller
     public function store(Request $request)
     {
         // dd($request->toArray());
+        if($request->b_atas != null) return $this->storeTensi($request);
         $data = $request->toArray();
         $data['created_at'] = Carbon::now()->format('Y-m-d h:i:s');
         $data['updated_at'] = Carbon::now()->format('Y-m-d h:i:s');
         // dd($data);
         try {
             Measure::create($data);
+            $hash = Crypt::encrypt($request->nik);
+            // dd($hash);
+            return redirect(route('pasien.index', $hash));
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
+
+    public function storeTensi(Request $request) {
+        $data = $request->toArray();
+        $data['created_at'] = Carbon::now()->format('Y-m-d h:i:s');
+        $data['updated_at'] = Carbon::now()->format('Y-m-d h:i:s');
+        // dd($data);
+        try {
+            MeasureTension::create($data);
             $hash = Crypt::encrypt($request->nik);
             // dd($hash);
             return redirect(route('pasien.index', $hash));

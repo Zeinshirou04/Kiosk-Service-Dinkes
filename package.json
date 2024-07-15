@@ -20,6 +20,8 @@
         "vite": "^5.0"
     },
     "dependencies": {
+        "@fileforge/client": "^0.1.17",
+        "@fileforge/react-print": "^0.1.141",
         "@inertiajs/inertia": "^0.11.1",
         "@inertiajs/inertia-react": "^0.8.1"
     }

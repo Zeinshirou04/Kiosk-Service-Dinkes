@@ -4,7 +4,7 @@ import NavLink from "./NavLink";
 export default function NavAside({}) {
     console.log(route().has('umum'));
     return (
-        <aside id="subMenu" className="w-2/6 h-full bg-[#388E3C] px-8">
+        <aside id="subMenu" className="w-2/6 h-full bg-[#46a84b] px-8">
             <nav className="max-w-full h-full px-2 py-12">
                 <div
                     id="navWrapper"
@@ -34,20 +34,20 @@ export default function NavAside({}) {
                         >
                             BPJS Kesehatan
                         </NavLink>
-                        <NavLink
+                        {/* <NavLink
                             href={route("menu.asuransi")}
                             className="font-bold text-lg"
                             active={route().current("menu.asuransi")}
                         >
                             Asuransi Lain
-                        </NavLink>
-                        <NavLink
+                        </NavLink> */}
+                        {/* <NavLink
                             href={route("menu.lansia")}
                             className="font-bold text-lg"
                             active={route().current("menu.lansia")}
                         >
                             Pasien Lansia
-                        </NavLink>
+                        </NavLink> */}
                     </div>
                 </div>
             </nav>

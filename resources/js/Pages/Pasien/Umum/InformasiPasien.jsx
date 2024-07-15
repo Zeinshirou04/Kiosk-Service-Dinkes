@@ -43,7 +43,7 @@ export default function Pasien({ pasien, rekap, tensi }) {
         // }
     };
 
-    console.log(ff.getStatus());
+    // console.log(ff.getStatus());
 
     const [popupGlucose, setPopupGlucose] = useState(false);
     const [popupTension, setPopupTension] = useState(false);

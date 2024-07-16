@@ -28,8 +28,8 @@ export default function NavAside({}) {
                             Pasien Umum
                         </NavLink>
                         <NavLink
-                            href={route("menu.bpjs")}
-                            className="font-bold text-lg"
+                            // href={route("menu.bpjs")}
+                            className="font-bold text-lg !bg-gray-400 !text-gray-300 !cursor-not-allowed"
                             active={route().current("menu.bpjs")}
                         >
                             BPJS Kesehatan

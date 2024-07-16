@@ -177,13 +177,13 @@ export default function Pasien({ pasien, rekap, tensi }) {
                                                     No
                                                 </th>
                                                 <th className="px-4 py-1 border-r-2 border-r-gray-500">
-                                                    Glukosa
+                                                    Sistol
                                                 </th>
                                                 <th className="px-4 py-1 border-r-2 border-r-gray-500">
-                                                    Berat badan
+                                                    Diastol
                                                 </th>
                                                 <th className="px-4 py-1 border-r-2 border-r-gray-500">
-                                                    Tinggi badan
+                                                    Tekanan Darah
                                                 </th>
                                                 <th className="px-4 py-1 border-r-2 border-r-gray-500">
                                                     Tanggal Ukur

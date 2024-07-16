@@ -64,7 +64,7 @@ export default function Tensi({ nik, active, setActive }) {
                     <form className="mt-4" onSubmit={handleFormSubmit}>
                         <div className="flex flex-col gap-2 py-2">
                             <label className="text-lg" htmlFor="b_atas">
-                                Batas Atas
+                                Sistole
                             </label>
                             <input
                                 className="bg-[#388E3C]/30 border-0 rounded-md w-full"
@@ -78,7 +78,7 @@ export default function Tensi({ nik, active, setActive }) {
                         </div>
                         <div className="flex flex-col gap-2 py-2">
                             <label className="text-lg" htmlFor="b_bawah">
-                                Batas Bawah
+                                Diastole
                             </label>
                             <input
                                 className="bg-[#388E3C]/30 border-0 rounded-md w-full"
@@ -92,7 +92,7 @@ export default function Tensi({ nik, active, setActive }) {
                         </div>
                         <div className="flex flex-col gap-2 py-2">
                             <label className="text-lg" htmlFor="denyut">
-                                Denyut
+                                Tekanan Darah
                             </label>
                             <input
                                 className="bg-[#388E3C]/30 border-0 rounded-md w-full"

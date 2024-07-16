@@ -32,7 +32,8 @@ class PatientRegisterController extends Controller
             $hash = Crypt::encrypt($request->nik);
             return redirect(route('pasien.index', $hash));
         } catch (\Throwable $th) {
-            throw $th;
+            // throw $th;
+            return redirect()->back();
         }
     }
 }

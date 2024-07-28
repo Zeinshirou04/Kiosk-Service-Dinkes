@@ -5,6 +5,7 @@ use App\Http\Controllers\Patient\Umum\PatientInformationController;
 use App\Http\Controllers\Patient\Umum\PatientMeasureController;
 use App\Http\Controllers\Patient\Umum\PatientRegisterController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\v2\HomeController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -36,6 +37,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::prefix('v2')->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('v2.home.index');
 });
 
 require __DIR__.'/auth.php';

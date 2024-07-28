@@ -1,0 +1,1 @@
+import{j as s,a as r}from"./app-ErkB5bNQ.js";function t({active:a=!1,className:D="",children:e,...o}){return s.jsx(r,{className:"w-full",...o,children:s.jsx("button",{className:"w-full py-5 px-6 duration-150 rounded-md "+D+(a?" bg-[#DDEEDF]/60":" bg-[#DDEEDF] hover:bg-[#DDEEDF]/90 focus:bg-[#DDEEDF]"),children:e})})}export{t as N};

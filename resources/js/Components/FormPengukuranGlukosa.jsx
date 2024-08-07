@@ -40,7 +40,13 @@ export default function Glukosa({ nik, active, setActive }) {
     const handleFormSubmit = (e) => {
         e.preventDefault();
 
-        post(route("pengukuran.store"));
+        post(route("pengukuran.store"), {
+            onError: (errors) => {
+                if (errors.error) {
+                    alert(errors.error);
+                }
+            }
+        });
     };
 
     // console.log(data);

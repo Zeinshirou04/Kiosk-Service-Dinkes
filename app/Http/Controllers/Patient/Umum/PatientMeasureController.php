@@ -28,6 +28,11 @@ class PatientMeasureController extends Controller
     {
         // dd($request->toArray());
         if($request->b_atas != null) return $this->storeTensi($request);
+
+        if ($this->hasZeroValue($request->all())) {
+            return redirect()->back()->with('error', 'Data tidak bisa disimpan jika nilainya 0');
+        }
+
         $data = $request->toArray();
         $data['created_at'] = Carbon::now()->format('Y-m-d h:i:s');
         $data['updated_at'] = Carbon::now()->format('Y-m-d h:i:s');
@@ -43,6 +48,10 @@ class PatientMeasureController extends Controller
     }
 
     public function storeTensi(Request $request) {
+        if ($this->hasZeroValue($request->all())) {
+            return redirect()->back()->with('error', 'Data tidak bisa disimpan jika nilainya 0');
+        }
+
         $data = $request->toArray();
         $data['created_at'] = Carbon::now()->format('Y-m-d h:i:s');
         $data['updated_at'] = Carbon::now()->format('Y-m-d h:i:s');
@@ -55,6 +64,16 @@ class PatientMeasureController extends Controller
         } catch (\Throwable $th) {
             throw $th;
         }
+    }
+
+    private function hasZeroValue(array $data)
+    {
+        foreach ($data as $value) {
+            if ($value == 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Home\MenuController;
+use App\Http\Controllers\Measure\GlucoseCreateController;
 use App\Http\Controllers\Patient\Umum\PatientInformationController;
 use App\Http\Controllers\Patient\Umum\PatientMeasureController;
 use App\Http\Controllers\Patient\Umum\PatientRegisterController;
@@ -18,6 +19,9 @@ Route::prefix('umum')->group(function () {
         'create', 'store'
     ]);
     Route::resource('/pengukuran', PatientMeasureController::class)->only([
+        'create', 'store', 'show'
+    ]);
+    Route::resource('/glucose', GlucoseCreateController::class)->only([
         'create', 'store', 'show'
     ]);
     Route::get('/cari', [PatientInformationController::class, 'index'])->name('pasien.cari');

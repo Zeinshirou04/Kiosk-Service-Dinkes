@@ -23,4 +23,8 @@ class Patients extends Model
     public function measure() {
         return $this->hasMany('measure');
     }
+
+    public function glucose_measure() {
+        return $this->hasMany('glucose_measure');
+    }
 }

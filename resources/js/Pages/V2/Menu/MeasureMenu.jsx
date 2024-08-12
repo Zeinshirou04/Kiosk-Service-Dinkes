@@ -21,7 +21,7 @@ export default function MeasureMenu({ isActive, setActive }) {
             }
         >
             <div className="w-full h-full relative">
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white h-1/2 w-3/5 rounded-md shadow-lg shadow-gray-500">
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white h-auto w-3/5 rounded-md shadow-lg shadow-gray-500">
                     <button
                         className="absolute right-0 mr-8 mt-8"
                         onClick={() => {

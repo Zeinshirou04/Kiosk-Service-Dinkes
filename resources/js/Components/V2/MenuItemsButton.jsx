@@ -10,7 +10,7 @@ export default function Menu({ className, title, icon, onClick }) {
         >
             <p className="font-bold text-white text-2xl text-left">{title}</p>
             <i
-                class={
+                className={
                     "fa-solid text-6xl text-white " + (icon ?? "fa-question")
                 }
             ></i>

@@ -30,7 +30,7 @@ export default function ConfirmPopup({
             <div className="w-full px-12">
                 <article className="text-center flex flex-col gap-3">
                     <h4 className="text-4xl">
-                        Apakah anda sudah pernah mendaftar?
+                        Apakah anda sudah pernah mendaftar sebelumnya?
                     </h4>
                 </article>
             </div>

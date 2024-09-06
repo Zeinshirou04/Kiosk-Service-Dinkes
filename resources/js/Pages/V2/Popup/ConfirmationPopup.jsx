@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PrimaryButton from "@/Components/V2/PrimaryButton";
 import DangerButton from "@/Components/V2/DangerButton";
+import { Inertia } from '@inertiajs/inertia';
 
 export default function ConfirmPopup({
     title = "",
@@ -35,8 +36,12 @@ export default function ConfirmPopup({
             </div>
             <div className="mx-auto mt-8">
                 <div className="w-full flex flex-row justify-center gap-4">
-                    <PrimaryButton className="text-3xl" text="Sudah" />
-                    <DangerButton className="text-3xl" text="Belum" />
+                    <PrimaryButton onClick={() => {
+                        Inertia.visit(route('login.create'));
+                    }} className="text-3xl" text="Sudah" />
+                    <DangerButton onClick={() => {
+                        Inertia.visit(route('register.create'));
+                    }} className="text-3xl" text="Belum" />
                 </div>
             </div>
         </div>

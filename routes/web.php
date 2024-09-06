@@ -6,8 +6,9 @@ use App\Http\Controllers\Patient\Umum\PatientInformationController;
 use App\Http\Controllers\Patient\Umum\PatientMeasureController;
 use App\Http\Controllers\Patient\Umum\PatientRegisterController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\v2\HomeController;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\V2\Auth\LoginSessionController;
+use App\Http\Controllers\V2\Auth\RegisterUserController;
+use App\Http\Controllers\V2\HomeController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -16,13 +17,18 @@ Route::get('/', [MenuController::class, 'index'])->name('menu.index');
 Route::prefix('umum')->group(function () {
     Route::get('/', [MenuController::class, 'umum'])->name('menu.umum');
     Route::resource('/pendaftaran', PatientRegisterController::class)->only([
-        'create', 'store'
+        'create',
+        'store'
     ]);
     Route::resource('/pengukuran', PatientMeasureController::class)->only([
-        'create', 'store', 'show'
+        'create',
+        'store',
+        'show'
     ]);
     Route::resource('/glucose', GlucoseCreateController::class)->only([
-        'create', 'store', 'show'
+        'create',
+        'store',
+        'show'
     ]);
     Route::get('/cari', [PatientInformationController::class, 'index'])->name('pasien.cari');
     Route::post('/cari', [PatientInformationController::class, 'find'])->name('pasien.encrypt');
@@ -45,6 +51,15 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('v2')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('v2.home.index');
+    Route::resource('/login', LoginSessionController::class)->only([
+        'create',
+        'store',
+        'destroy'
+    ]);
+    Route::resource('/register', RegisterUserController::class)->only([
+        'create',
+        'store'
+    ]);
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

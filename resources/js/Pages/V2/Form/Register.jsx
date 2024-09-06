@@ -76,6 +76,7 @@ export default function Register({}) {
                                 type="date"
                                 name="tgl_lahir"
                                 id="tgl_lahir"
+                                placeholder="12/02/2004"
                             />
                             <select
                                 className="col-span-2 border-2 border-green-400 rounded-xl text-xl bg-gray-200"

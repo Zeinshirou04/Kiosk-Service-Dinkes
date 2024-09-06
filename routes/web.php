@@ -1,16 +1,16 @@
 <?php
 
-use App\Http\Controllers\Home\MenuController;
-use App\Http\Controllers\Measure\GlucoseCreateController;
-use App\Http\Controllers\Patient\Umum\PatientInformationController;
-use App\Http\Controllers\Patient\Umum\PatientMeasureController;
-use App\Http\Controllers\Patient\Umum\PatientRegisterController;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\v2\HomeController;
+use App\Http\Controllers\Home\MenuController;
 use App\Http\Controllers\V2\Auth\LoginSessionController;
 use App\Http\Controllers\V2\Auth\RegisterUserController;
-use App\Http\Controllers\V2\HomeController;
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
+use App\Http\Controllers\Measure\GlucoseCreateController;
+use App\Http\Controllers\Patient\Umum\PatientMeasureController;
+use App\Http\Controllers\Patient\Umum\PatientRegisterController;
+use App\Http\Controllers\Patient\Umum\PatientInformationController;
 
 Route::get('/', [MenuController::class, 'index'])->name('menu.index');
 

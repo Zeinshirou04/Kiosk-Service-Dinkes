@@ -22,7 +22,7 @@ export default function ConfirmPopup({
         setTimeout(() => {
             setActive((prevState) => ({
                 ...prevState,
-                WeightMeasureActive: !prevState.WeightMeasureActive,
+                WeightTutorialActive: !prevState.WeightTutorialActive,
             }));
         }, 500);
     };
@@ -35,7 +35,7 @@ export default function ConfirmPopup({
         setTimeout(() => {
             setActive((prevState) => ({
                 ...prevState,
-                GlucoseMeasureActive: !prevState.GlucoseMeasureActive,
+                GlucoseTutorialActive: !prevState.GlucoseTutorialActive,
             }));
         }, 500);
     };
@@ -48,14 +48,13 @@ export default function ConfirmPopup({
         setTimeout(() => {
             setActive((prevState) => ({
                 ...prevState,
-                BloodMeasureActive: !prevState.BloodMeasureActive,
+                BloodTutorialActive: !prevState.BloodTutorialActive,
             }));
         }, 500);
     };
 
     const handleConfirm = () => {
         if (!isAuthenticated) Inertia.visit(route("login.create"));
-        console.log(state);
         switch (state) {
             case "weight":
                 isWeightMeasure();

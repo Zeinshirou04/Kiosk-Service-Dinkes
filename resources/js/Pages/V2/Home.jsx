@@ -6,12 +6,20 @@ import PatientForm from "./Popup/Form/Auth/PatientRegisterForm";
 import PatientInfo from "./Popup/Dashboard/PatientInfo";
 import SmartCheckup from "./Popup/Form/SmartCheckup";
 import Confirm from "./Popup/Confirm";
-import GlucoseMeasure from "./Popup/Form/Measure/SmartGlucoseMeasure"
-import WeightMeasure from "./Popup/Form/Measure/SmartWeightMeasure"
-import BloodMeasure from "./Popup/Form/Measure/SmartBloodMeasure"
-import Guide from "./Popup/GuidePopup"
+import GlucoseMeasure from "./Popup/Form/Measure/SmartGlucoseMeasure";
+import WeightMeasure from "./Popup/Form/Measure/SmartWeightMeasure";
+import BloodMeasure from "./Popup/Form/Measure/SmartBloodMeasure";
+import Guide from "./Popup/GuidePopup";
+import WeightTutorial from "./Popup/Tutorial/WeightTutorial";
+import GlucoseTutorial from "./Popup/Tutorial/GlucoseTutorial";
+import BloodTutorial from "./Popup/Tutorial/BloodTutorial";
 
-export default function Home({ nik = undefined, no_hp = undefined, state = 'none', measure = undefined }) {
+export default function Home({
+    nik = undefined,
+    no_hp = undefined,
+    state = "none",
+    measure = undefined,
+}) {
     const isAuthenticated = nik != undefined ? true : false;
     const [popups, setPopups] = useState({
         SmartCheckupActive: false,
@@ -22,7 +30,10 @@ export default function Home({ nik = undefined, no_hp = undefined, state = 'none
         GlucoseMeasureActive: false,
         WeightMeasureActive: false,
         BloodMeasureActive: false,
-        GuideActive: false
+        GuideActive: false,
+        WeightTutorialActive: false,
+        GlucoseTutorialActive: false,
+        BloodTutorialActive: false,
     });
 
     return (
@@ -43,11 +54,55 @@ export default function Home({ nik = undefined, no_hp = undefined, state = 'none
                 setActive={setPopups}
             />
             <PatientInfo isActive={popups.InfoActive} setActive={setPopups} />
-            <Confirm state={state} isActive={popups.ConfirmActive} setActive={setPopups} isAuthenticated={isAuthenticated} measure={measure} />
-            <Guide state={state} isActive={popups.WeightMeasureActive} setActive={setPopups} nik={nik} />
-            <WeightMeasure state={state} isActive={popups.WeightMeasureActive} setActive={setPopups} nik={nik} />
-            <GlucoseMeasure state={state} isActive={popups.GlucoseMeasureActive} setActive={setPopups} nik={nik} />
-            <BloodMeasure state={state} isActive={popups.BloodMeasureActive} setActive={setPopups} nik={nik} />
+            <Confirm
+                state={state}
+                isActive={popups.ConfirmActive}
+                setActive={setPopups}
+                isAuthenticated={isAuthenticated}
+                measure={measure}
+            />
+            <Guide
+                state={state}
+                isActive={popups.WeightMeasureActive}
+                setActive={setPopups}
+                nik={nik}
+            />
+            <WeightMeasure
+                state={state}
+                isActive={popups.WeightMeasureActive}
+                setActive={setPopups}
+                nik={nik}
+            />
+            <GlucoseMeasure
+                state={state}
+                isActive={popups.GlucoseMeasureActive}
+                setActive={setPopups}
+                nik={nik}
+            />
+            <BloodMeasure
+                state={state}
+                isActive={popups.BloodMeasureActive}
+                setActive={setPopups}
+                nik={nik}
+            />
+            <WeightTutorial
+                state={state}
+                isActive={popups.WeightTutorialActive}
+                setActive={setPopups}
+                nik={nik}
+            />
+            <GlucoseTutorial
+                state={state}
+                isActive={popups.GlucoseTutorialActive}
+                setActive={setPopups}
+                nik={nik}
+            />
+            <BloodTutorial
+                state={state}
+                isActive={popups.BloodTutorialActive}
+                setActive={setPopups}
+                nik={nik}
+            />
             <div className="w-full flex flex-col justify-center gap-8">
                 <div className="w-full">
                     <h4 className="text-center font-header font-normal text-3xl">

@@ -14,6 +14,7 @@ export default function Confirm({
     let preview = undefined;
     let title = undefined;
     let confirmMessage = undefined;
+    let declineMessage = undefined;
 
     switch (state) {
         case "weight":
@@ -31,6 +32,8 @@ export default function Confirm({
                     <p>Tinggi Badan: {measure.tinggi}cm</p>
                 </article>
             );
+            confirmMessage = "Ya, Ulangi"
+            declineMessage = "Tidak, Lanjutkan"
             break;
 
         case "blood":
@@ -42,6 +45,8 @@ export default function Confirm({
                     <p>Kadar Gula Darah: {measure.glucose}mg/dL</p>
                 </article>
             );
+            confirmMessage = "Ya, Ulangi"
+            declineMessage = "Tidak, Lanjutkan"
             break;
 
         case "confirmation":
@@ -54,6 +59,8 @@ export default function Confirm({
                     <p>Kesimpulan: Normal</p>
                 </article>
             );
+            confirmMessage = "Ya, Ulangi"
+            declineMessage = "Tidak, Cetak"
             break;
 
         case "finished":
@@ -64,7 +71,7 @@ export default function Confirm({
                     <h4 className="text-center">Pengukuran Selesai!</h4>
                 </header>
             );
-            confirmMessage = "Log Out"
+            declineMessage = "Log Out"
             break;
 
         default:
@@ -97,8 +104,8 @@ export default function Confirm({
                         isActive={isActive}
                         setActive={setActive}
                         text={text}
-                        confirmMessage="Ya"
-                        declineMessage={confirmMessage ?? "Tidak"}
+                        confirmMessage={confirmMessage ?? "Ya"}
+                        declineMessage={declineMessage ?? "Tidak"}
                         isAuthenticated={isAuthenticated}
                         state={state}
                         preview={preview}

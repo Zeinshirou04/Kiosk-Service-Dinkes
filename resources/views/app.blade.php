@@ -4,6 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Anjungan Kesehatan Mandiri dari Dinas Kesehatan Kota Semarang dan Fakultas Teknik UDINUS Semarang">
+    <meta name="author" content="Dinas Kesehatan Kota Semarang dan UDINUS Semarang">
+    <meta name="keywords" content="Kesehatan, UDINUS Kesehatan, Kesehatan UDINUS, Mandiri">
 
     <title inertia>{{ config('app.name', 'Laravel') }}</title>
 

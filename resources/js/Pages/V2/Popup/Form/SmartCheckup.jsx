@@ -35,7 +35,12 @@ export default function SmartCheckup({ isActive, setActive }) {
                     >
                         <i className="fa-solid fa-x text-4xl"></i>
                     </button>
-                    <ConfirmPopup isActive={confirmAuthPopup} />
+                    <ConfirmPopup
+                        isActive={confirmAuthPopup}
+                        text="Apakah anda sudah pernah mendaftar sebelumnya?"
+                        confirmMessage="Sudah"
+                        declineMessage="Belum"
+                    />
                     <div
                         className={
                             "h-auto w-full mt-8 " + (menuActive ? "" : "hidden")

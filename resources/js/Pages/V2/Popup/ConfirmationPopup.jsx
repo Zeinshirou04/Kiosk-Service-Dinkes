@@ -1,18 +1,135 @@
 import { useState } from "react";
 import PrimaryButton from "@/Components/V2/PrimaryButton";
 import DangerButton from "@/Components/V2/DangerButton";
-import { Inertia } from '@inertiajs/inertia';
+import { Inertia } from "@inertiajs/inertia";
 
 export default function ConfirmPopup({
-    title = "",
+    title = undefined,
     isActive = false,
-    className = "",
+    setActive,
+    text,
+    confirmMessage = "Sudah",
+    declineMessage = "Belum",
+    isAuthenticated = false,
+    state = "none",
+    preview = undefined,
 }) {
-    const resetActive = (time) => {
+    const isWeightMeasure = () => {
+        setActive((prevState) => ({
+            ...prevState,
+            ConfirmActive: !prevState.ConfirmActive,
+        }));
         setTimeout(() => {
-            setMenuActive(true);
-            setGlucoseFormActive(false);
-        }, time);
+            setActive((prevState) => ({
+                ...prevState,
+                WeightMeasureActive: !prevState.WeightMeasureActive,
+            }));
+        }, 500);
+    };
+
+    const isGlucoseMeasure = () => {
+        setActive((prevState) => ({
+            ...prevState,
+            ConfirmActive: !prevState.ConfirmActive,
+        }));
+        setTimeout(() => {
+            setActive((prevState) => ({
+                ...prevState,
+                GlucoseMeasureActive: !prevState.GlucoseMeasureActive,
+            }));
+        }, 500);
+    };
+
+    const isBloodMeasure = () => {
+        setActive((prevState) => ({
+            ...prevState,
+            ConfirmActive: !prevState.ConfirmActive,
+        }));
+        setTimeout(() => {
+            setActive((prevState) => ({
+                ...prevState,
+                BloodMeasureActive: !prevState.BloodMeasureActive,
+            }));
+        }, 500);
+    };
+
+    const handleConfirm = () => {
+        if (!isAuthenticated) Inertia.visit(route("login.create"));
+        console.log(state);
+        switch (state) {
+            case "weight":
+                isWeightMeasure();
+                break;
+
+            case "glucose":
+                Inertia.visit(
+                    route("v2.home.index", {
+                        _query: {
+                            state: "weight",
+                        },
+                    })
+                );
+                break;
+
+            case "blood":
+                Inertia.visit(
+                    route("v2.home.index", {
+                        _query: {
+                            state: "glucose",
+                        },
+                    })
+                );
+                break;
+
+            case "confirmation":
+                Inertia.visit(
+                    route("v2.home.index", {
+                        _query: {
+                            state: "blood",
+                        },
+                    })
+                );
+                break;
+
+            default:
+                break;
+        }
+    };
+
+    const handleDecline = () => {
+        if (!isAuthenticated) Inertia.visit(route("register.create"));
+        switch (state) {
+            case "weight":
+                isGlucoseMeasure();
+                break;
+
+            case "glucose":
+                isGlucoseMeasure();
+                break;
+
+            case "blood":
+                isBloodMeasure();
+                break;
+
+            case "confirmation":
+                Inertia.visit(
+                    route("v2.home.index", {
+                        _query: {
+                            state: "finished",
+                        },
+                    })
+                );
+                break;
+
+            case "finished":
+                Inertia.visit(
+                    route("logout.attempt")
+                );
+                break;
+
+            default:
+                break;
+        }
     };
 
     return (
@@ -22,26 +139,28 @@ export default function ConfirmPopup({
                     Anjungan Kesehatan Mandiri
                 </h6>
             </div>
-            <div className="w-full gap-3 py-8 px-8">
-                <header className="w-full px-8">
-                    <h2 className="text-6xl font-bold text-center">{title}</h2>
-                </header>
-            </div>
-            <div className="w-full px-12">
+            <div className="w-full px-12 mt-8">{preview ?? title}</div>
+            <div className="w-full px-12 mt-8">
                 <article className="text-center flex flex-col gap-3">
-                    <h4 className="text-4xl">
-                        Apakah anda sudah pernah mendaftar sebelumnya?
-                    </h4>
+                    <h4 className="text-4xl">{text}</h4>
                 </article>
             </div>
             <div className="mx-auto mt-8">
                 <div className="w-full flex flex-row justify-center gap-4">
-                    <PrimaryButton onClick={() => {
-                        Inertia.visit(route('login.create'));
-                    }} className="text-3xl" text="Sudah" />
-                    <DangerButton onClick={() => {
-                        Inertia.visit(route('register.create'));
-                    }} className="text-3xl" text="Belum" />
+                    {state != "finished" ? (
+                        <PrimaryButton
+                            onClick={handleConfirm}
+                            className="text-3xl"
+                            text={confirmMessage}
+                        />
+                    ) : (
+                        ""
+                    )}
+                    <DangerButton
+                        onClick={handleDecline}
+                        className="text-3xl"
+                        text={declineMessage}
+                    />
                 </div>
             </div>
         </div>

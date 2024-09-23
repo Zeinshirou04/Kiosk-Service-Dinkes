@@ -2,10 +2,12 @@
 
 namespace App\Models\Patient;
 
+use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
-class Patients extends Model
+class Patients extends Authenticatable
 {
     use HasFactory;
 

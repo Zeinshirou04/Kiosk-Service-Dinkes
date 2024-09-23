@@ -2,7 +2,7 @@ import Guest from "@/Layouts/V2/GuestLayout";
 import PrimaryButton from "@/Components/V2/PrimaryButton";
 
 export default function Register({}) {
-    const prevPage = document.referrer || "/v2";
+    const prevPage = "/v2";
     console.log(prevPage);
 
     return (

@@ -11,6 +11,9 @@ use App\Http\Controllers\Measure\GlucoseCreateController;
 use App\Http\Controllers\Patient\Umum\PatientMeasureController;
 use App\Http\Controllers\Patient\Umum\PatientRegisterController;
 use App\Http\Controllers\Patient\Umum\PatientInformationController;
+use App\Http\Controllers\V2\Measure\PatientGlucoseController;
+use App\Http\Controllers\V2\Measure\PatientTensionController;
+use App\Http\Controllers\V2\Measure\PatientWeightController;
 
 Route::get('/', [MenuController::class, 'index'])->name('menu.index');
 
@@ -53,13 +56,27 @@ Route::prefix('v2')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('v2.home.index');
     Route::resource('/login', LoginSessionController::class)->only([
         'create',
-        'store',
-        'destroy'
     ]);
+    Route::post('/login', [LoginSessionController::class, 'find'])->name('login.attempt');
+    Route::get('logout', [LoginSessionController::class, 'destroy'])->name('logout.attempt');
     Route::resource('/register', RegisterUserController::class)->only([
         'create',
         'store'
     ]);
+
+    Route::prefix('measure')->group(function () {
+        Route::resource('/weight', PatientWeightController::class)->only([
+            'store',
+            'show'
+        ]);
+        Route::resource('/glucose', PatientGlucoseController::class)->only([
+            'store',
+            'show'
+        ]);
+        Route::prefix('tension')->group(function () {
+            Route::post('/', [PatientTensionController::class, 'store'])->name('patient.tension.store');
+        });
+    });
 });
 
 require __DIR__ . '/auth.php';

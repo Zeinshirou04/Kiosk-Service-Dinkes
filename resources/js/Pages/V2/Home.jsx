@@ -5,13 +5,24 @@ import MeasureMenu from "./Popup/Menu/MeasureMenu";
 import PatientForm from "./Popup/Form/Auth/PatientRegisterForm";
 import PatientInfo from "./Popup/Dashboard/PatientInfo";
 import SmartCheckup from "./Popup/Form/SmartCheckup";
+import Confirm from "./Popup/Confirm";
+import GlucoseMeasure from "./Popup/Form/Measure/SmartGlucoseMeasure"
+import WeightMeasure from "./Popup/Form/Measure/SmartWeightMeasure"
+import BloodMeasure from "./Popup/Form/Measure/SmartBloodMeasure"
+import Guide from "./Popup/GuidePopup"
 
-export default function Home() {
+export default function Home({ nik = undefined, no_hp = undefined, state = 'none', measure = undefined }) {
+    const isAuthenticated = nik != undefined ? true : false;
     const [popups, setPopups] = useState({
         SmartCheckupActive: false,
         MeasureActive: false,
         PatientRegisterActive: false,
         InfoActive: false,
+        ConfirmActive: isAuthenticated,
+        GlucoseMeasureActive: false,
+        WeightMeasureActive: false,
+        BloodMeasureActive: false,
+        GuideActive: false
     });
 
     return (
@@ -32,6 +43,11 @@ export default function Home() {
                 setActive={setPopups}
             />
             <PatientInfo isActive={popups.InfoActive} setActive={setPopups} />
+            <Confirm state={state} isActive={popups.ConfirmActive} setActive={setPopups} isAuthenticated={isAuthenticated} measure={measure} />
+            <Guide state={state} isActive={popups.WeightMeasureActive} setActive={setPopups} nik={nik} />
+            <WeightMeasure state={state} isActive={popups.WeightMeasureActive} setActive={setPopups} nik={nik} />
+            <GlucoseMeasure state={state} isActive={popups.GlucoseMeasureActive} setActive={setPopups} nik={nik} />
+            <BloodMeasure state={state} isActive={popups.BloodMeasureActive} setActive={setPopups} nik={nik} />
             <div className="w-full flex flex-col justify-center gap-8">
                 <div className="w-full">
                     <h4 className="text-center font-header font-normal text-3xl">
@@ -86,7 +102,8 @@ export default function Home() {
                             onClick={() => {
                                 setPopups((prevState) => ({
                                     ...prevState,
-                                    SmartCheckupActive: !prevState.SmartCheckupActive,
+                                    SmartCheckupActive:
+                                        !prevState.SmartCheckupActive,
                                 }));
                             }}
                         />

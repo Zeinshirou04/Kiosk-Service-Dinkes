@@ -1,9 +1,22 @@
 import Guest from "@/Layouts/V2/GuestLayout";
 import PrimaryButton from "@/Components/V2/PrimaryButton";
+import { useForm } from "@inertiajs/react";
 
 export default function Login() {
-    const prevPage = document.referrer || "/v2";
+    const { data, setData, post, processing, errors, reset } = useForm({
+        nik: undefined,
+        no_hp: undefined,
+        kode: undefined,
+    });
+
+    const prevPage = "/v2";
     console.log(prevPage);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        post(route('login.attempt'));
+    }
 
     return (
         <Guest
@@ -29,7 +42,7 @@ export default function Login() {
                         </caption>
                     </section>
                     <section className="w-full">
-                        <form className="grid grid-cols-6 gap-4">
+                        <form className="grid grid-cols-6 gap-4" onSubmit={handleSubmit}>
                             <label
                                 htmlFor="nik"
                                 className="col-span-6 text-xl font-bold"
@@ -41,6 +54,10 @@ export default function Login() {
                                 type="number"
                                 name="nik"
                                 id="nik"
+                                value={data.nik}
+                                onChange={(e) => {
+                                    setData("nik", e.target.value);
+                                }}
                                 placeholder="Contoh: 357601********03"
                             />
                             <label
@@ -54,6 +71,10 @@ export default function Login() {
                                 type="number"
                                 name="no_hp"
                                 id="no_hp"
+                                value={data.no_hp}
+                                onChange={(e) => {
+                                    setData("no_hp", e.target.value);
+                                }}
                                 placeholder="Contoh: 0812****1998"
                             />
                             <label
@@ -64,10 +85,14 @@ export default function Login() {
                             </label>
                             <input
                                 className="col-span-2 border-2 border-green-400 rounded-xl text-xl bg-gray-200 tex"
-                                type="tel"
-                                maxlength="13"
-                                name="nik"
-                                id="nik"
+                                type="number"
+                                maxlength="6"
+                                name="kode"
+                                id="kode"
+                                value={data.kode}
+                                onChange={(e) => {
+                                    setData("kode", e.target.value);
+                                }}
                                 placeholder="Contoh: 123456"
                             />
                             <div className="col-span-4"></div>

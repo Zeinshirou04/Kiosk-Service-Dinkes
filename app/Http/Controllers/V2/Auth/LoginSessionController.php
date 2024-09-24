@@ -22,6 +22,9 @@ class LoginSessionController extends Controller
     public function find(LoginRequest $request)
     {
         if ($this->isAuthenticated($request)) return redirect()->to(route('v2.home.index', ['state' => 'weight']));
+        return redirect()->to(route('login.create'))->withErrors([
+            'match' => 'Informasi yang anda masukkan tidak terdaftar'
+        ]);
     }
 
     /**

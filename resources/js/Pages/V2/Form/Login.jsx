@@ -10,13 +10,12 @@ export default function Login() {
     });
 
     const prevPage = "/v2";
-    console.log(prevPage);
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        post(route('login.attempt'));
-    }
+        post(route("login.attempt"));
+    };
 
     return (
         <Guest
@@ -31,7 +30,7 @@ export default function Login() {
                     </a>
                 </div>
                 <div className="w-full border-4 border-green-400 rounded-2xl overflow-hidden px-8 py-8 grid grid-flow-row">
-                    <section className="w-full grid grid-rows-2 gap-4">
+                    <section className="w-full grid grid-rows-2 gap-3">
                         <header className="w-full">
                             <h2 className="text-6xl font-extrabold">Masuk</h2>
                         </header>
@@ -39,10 +38,18 @@ export default function Login() {
                             <p className="text-xl italic text-gray-700 text-left border-b-2 border-black pb-1">
                                 Isikan NIK, No WA, dan kode OTP untuk Masuk
                             </p>
+                            {errors.match && (
+                                <p className="text-xl italic text-red-500 text-left pt-1 pb-2">
+                                    {errors.match}
+                                </p>
+                            )}
                         </caption>
                     </section>
                     <section className="w-full">
-                        <form className="grid grid-cols-6 gap-4" onSubmit={handleSubmit}>
+                        <form
+                            className="grid grid-cols-6 gap-4"
+                            onSubmit={handleSubmit}
+                        >
                             <label
                                 htmlFor="nik"
                                 className="col-span-6 text-xl font-bold"
@@ -59,6 +66,7 @@ export default function Login() {
                                     setData("nik", e.target.value);
                                 }}
                                 placeholder="Contoh: 357601********03"
+                                required
                             />
                             <label
                                 htmlFor="no_hp"
@@ -76,6 +84,7 @@ export default function Login() {
                                     setData("no_hp", e.target.value);
                                 }}
                                 placeholder="Contoh: 0812****1998"
+                                required
                             />
                             <label
                                 htmlFor="nik"

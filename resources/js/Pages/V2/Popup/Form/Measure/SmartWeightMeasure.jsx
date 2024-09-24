@@ -12,8 +12,19 @@ export default function WeightMeasure({
         nik: nik,
         berat: undefined,
         tinggi: undefined,
+        bmi: undefined,
+        kategori: "Tidak Terdefinisi",
         dev_id: undefined,
     });
+
+    const handleBmi = (bmi) => {
+        if (bmi < 17) return "Sangat Kurus";
+        if (bmi < 18.5) return "Kurus";
+        if (bmi <= 25) return "Normal";
+        if (bmi <= 27) return "Gemuk";
+        if (bmi > 27) return "Obesitas";
+        return "Tidak Terdefinisi";
+    };
 
     const fetchData = async () => {
         try {
@@ -23,10 +34,13 @@ export default function WeightMeasure({
                 })
             );
             const temp = response.data.data;
+            let bmi = (temp.berat / Math.pow(temp.tinggi / 100, 2)).toFixed(1);
             setData((data) => ({
                 ...data,
                 berat: temp.berat,
                 tinggi: temp.tinggi,
+                bmi: bmi,
+                kategori: handleBmi(bmi),
                 dev_id: temp.dev_id,
             }));
             // console.log(temp.gula);
@@ -48,8 +62,8 @@ export default function WeightMeasure({
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        post(route('weight.store'));
-    }
+        post(route("weight.store"));
+    };
 
     return (
         <div
@@ -136,10 +150,15 @@ export default function WeightMeasure({
                             </div>
                             <div className="mt-8 px-12 flex flex-row gap-6">
                                 <div className="flex flex-row">
-                                    <p className="text-3xl"><strong>BMI:</strong> 20</p>
+                                    <p className="text-3xl">
+                                        <strong>BMI:</strong> {data.bmi}
+                                    </p>
                                 </div>
                                 <div className="flex flex-row">
-                                    <p className="text-3xl"><strong>Kategori:</strong> Normal</p>
+                                    <p className="text-3xl">
+                                        <strong>Kategori:</strong>
+                                        {" " + data.kategori}
+                                    </p>
                                 </div>
                             </div>
                             <div className="px-12 mt-8 w-full grid grid-cols-4">

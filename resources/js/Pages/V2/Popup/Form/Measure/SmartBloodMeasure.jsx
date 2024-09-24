@@ -13,8 +13,19 @@ export default function BloodMeasure({
         b_atas: undefined,
         b_bawah: undefined,
         denyut: undefined,
+        kategori: undefined,
         dev_id: undefined,
     });
+
+    const handleBlood = (sistole, diastole) => {
+        if(sistole == 0 & diastole == 0) return "Tidak Terdefinisi"
+        if (sistole < 120 && diastole < 80) return "Normal";
+        if (sistole < 139 && diastole < 89) return "Pra Hipertensi";
+        if (sistole < 159 && diastole < 99) return "Hipertensi Tingkat 1";
+        if (sistole >= 160 && diastole >= 100) return "Hipertensi Tingkat 2";
+        if (sistole > 140 && diastole < 90) return "Hipertensi Sistolik Terisolasi";
+        return "Tidak Terdefinisi";
+    };
 
     const fetchData = async () => {
         try {
@@ -29,6 +40,7 @@ export default function BloodMeasure({
                 b_atas: temp.b_atas,
                 b_bawah: temp.b_bawah,
                 denyut: temp.denyut,
+                kategori: handleBlood(temp.b_atas, temp.b_bawah),
                 dev_id: temp.dev_id,
             }));
             // console.log(temp.gula);
@@ -141,7 +153,7 @@ export default function BloodMeasure({
                                         htmlFor="nik"
                                         className="text-4xl col-span-3"
                                     >
-                                        Tensi Keseluruhan
+                                        Kategori
                                     </label>
                                     <div className="col-span-3">
                                         <input
@@ -149,7 +161,7 @@ export default function BloodMeasure({
                                             type="text"
                                             name="denyut"
                                             id="denyut"
-                                            value={"Normal"}
+                                            value={data.kategori}
                                             className="text-4xl rounded-lg w-full border border-green-500"
                                         />
                                         <InputError />

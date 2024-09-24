@@ -15,6 +15,24 @@ export default function Confirm({
     let title = undefined;
     let confirmMessage = undefined;
     let declineMessage = undefined;
+    let keterangan = undefined;
+
+    const handleGlucose = (glucose) => {
+        if (glucose < 200) return "Normal";
+        if (glucose >= 200) return "Diabetes";
+        return "Tidak Terdefinisi";
+    };
+
+    const handleBlood = (sistole, diastole) => {
+        if ((sistole == 0) & (diastole == 0)) return "Tidak Terdefinisi";
+        if (sistole < 120 && diastole < 80) return "Normal";
+        if (sistole < 139 && diastole < 89) return "Pra Hipertensi";
+        if (sistole < 159 && diastole < 99) return "Hipertensi Tingkat 1";
+        if (sistole >= 160 && diastole >= 100) return "Hipertensi Tingkat 2";
+        if (sistole > 140 && diastole < 90)
+            return "Hipertensi Sistolik Terisolasi";
+        return "Tidak Terdefinisi";
+    };
 
     switch (state) {
         case "weight":
@@ -32,35 +50,40 @@ export default function Confirm({
                     <p>Tinggi Badan: {measure.tinggi}cm</p>
                 </article>
             );
-            confirmMessage = "Ya, Ulangi"
-            declineMessage = "Tidak, Lanjutkan"
+            confirmMessage = "Ya, Ulangi";
+            declineMessage = "Tidak, Lanjutkan";
             break;
 
         case "blood":
             text =
                 "Apakah anda ingin mengulang pengukuran atau melanjutkan pengukuran Tensi/Tekanan Darah?";
+
+            keterangan = handleGlucose(measure.glucose);
             preview = (
                 <article className="text-center flex flex-col gap-3 text-4xl">
                     <h4 className="font-bold">Data Berhasil Disimpan!</h4>
                     <p>Kadar Gula Darah: {measure.glucose}mg/dL</p>
+                    <p>Keterangan: {keterangan}</p>
                 </article>
             );
-            confirmMessage = "Ya, Ulangi"
-            declineMessage = "Tidak, Lanjutkan"
+            confirmMessage = "Ya, Ulangi";
+            declineMessage = "Tidak, Lanjutkan";
             break;
 
         case "confirmation":
             text = "Apakah anda ingin mengulang pengukuran? (Cetak)";
+
+            keterangan = handleBlood(measure.b_atas, measure.b_bawah);
             preview = (
                 <article className="text-center flex flex-col gap-3 text-4xl">
                     <h4 className="font-bold">Data Berhasil Disimpan!</h4>
                     <p>Sistole: {measure.b_atas}mmHg</p>
-                    <p>Diastole: {measure.denyut}mmHg</p>
-                    <p>Kesimpulan: Normal</p>
+                    <p>Diastole: {measure.b_bawah}mmHg</p>
+                    <p>Kesimpulan: {keterangan}</p>
                 </article>
             );
-            confirmMessage = "Ya, Ulangi"
-            declineMessage = "Tidak, Cetak"
+            confirmMessage = "Ya, Ulangi";
+            declineMessage = "Tidak, Cetak";
             break;
 
         case "finished":
@@ -71,7 +94,7 @@ export default function Confirm({
                     <h4 className="text-center">Pengukuran Selesai!</h4>
                 </header>
             );
-            declineMessage = "Log Out"
+            declineMessage = "Log Out";
             break;
 
         default:

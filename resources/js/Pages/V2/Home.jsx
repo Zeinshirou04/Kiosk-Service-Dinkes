@@ -13,6 +13,7 @@ import Guide from "./Popup/GuidePopup";
 import WeightTutorial from "./Popup/Tutorial/WeightTutorial";
 import GlucoseTutorial from "./Popup/Tutorial/GlucoseTutorial";
 import BloodTutorial from "./Popup/Tutorial/BloodTutorial";
+import { Inertia } from "@inertiajs/inertia";
 
 export default function Home({
     nik = undefined,
@@ -106,7 +107,7 @@ export default function Home({
             <div className="w-full flex flex-col justify-center gap-8">
                 <div className="w-full">
                     <h4 className="text-center font-header font-normal text-3xl">
-                        Selamat Datang di Puskesmas Poncol
+                        Selamat Datang di
                     </h4>
                     <h1 className="text-8xl font-header font-extrabold text-center leading-snug">
                         ANJUNGAN KESEHATAN MANDIRI
@@ -114,11 +115,10 @@ export default function Home({
                 </div>
                 <div className="w-full">
                     <p className="text-center text-2xl text-wrap mx-auto mb-6">
-                        Cuaca di Poncol, Semarang Tengah saat ini adalah{" "}
-                        <b>Cerah Berawan</b>
+                        Cuaca di Mijen saat ini adalah <b>Cerah Berawan</b>
                     </p>
-                    <div className="flex flex-row w-full justify-center text-4xl gap-4">
-                        <div className="flex flex-col w-1/2 items-end gap-3">
+                    {/* <div className="flex flex-row w-full justify-center text-4xl gap-4">
+                        <div className="flex flex-col items-end gap-3">
                             <div className="w-auto">
                                 <p className="text-xl">Temperatur Saat Ini</p>
                             </div>
@@ -128,7 +128,7 @@ export default function Home({
                             </div>
                         </div>
                         <div className="w-1 h-auto bg-black"></div>
-                        <div className="flex flex-col w-1/2 items-start gap-3">
+                        <div className="flex flex-col items-start gap-3">
                             <div className="w-auto">
                                 <p className="text-xl">
                                     Kecepatan Angin Rata-Rata
@@ -139,7 +139,7 @@ export default function Home({
                                 <p>12.8km/h</p>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
             <div className="mx-auto w-5/6">
@@ -147,13 +147,13 @@ export default function Home({
                     <div className="mt-12 mb-6 border-b-2 mx-auto w-full border-b-black"></div>
                     <div className="w-full my-6">
                         <h5 className="text-3xl font-bold text-center">
-                            Menu Cerdas
+                            Menu Utama
                         </h5>
                     </div>
                     <div className="grid grid-cols-3 gap-4 w-full">
                         <Menu
-                            title={"Cek Kesehatan Cerdas"}
-                            icon={"fa-robot"}
+                            title={"Cek Kesehatan Mandiri"}
+                            icon={"fa-suitcase-medical"}
                             onClick={() => {
                                 setPopups((prevState) => ({
                                     ...prevState,
@@ -168,12 +168,24 @@ export default function Home({
                     <div className="mt-12 mb-6 border-b-2 mx-auto w-full border-b-black"></div>
                     <div className="w-full my-6">
                         <h5 className="text-3xl font-bold text-center">
-                            Menu Utama
+                            Menu Pintasan
                         </h5>
                     </div>
                     <div className="grid grid-cols-3 gap-4 w-full">
                         <Menu
-                            title={"Cek Kesehatan Mandiri"}
+                            title={"Daftar Pasien Baru"}
+                            icon={"fa-user-plus"}
+                            className={
+                                "from-blue-500/80 via-blue-500 to-blue-500/70 hover:from-blue-600/80 hover:via-blue-600 hover:to-blue-600/70 focus:from-blue-700/80 focus:via-blue-700 focus:to-blue-700/70 active:from-blue-700/80 active:via-blue-700 active:to-blue-700/70"
+                            }
+                            onClick={() => {
+                                Inertia.visit(
+                                    route("register.create")
+                                );
+                            }}
+                        />
+                        <Menu
+                            title={"Menu Form Pengukuran"}
                             icon={"fa-suitcase-medical"}
                             className={
                                 "from-blue-500/80 via-blue-500 to-blue-500/70 hover:from-blue-600/80 hover:via-blue-600 hover:to-blue-600/70 focus:from-blue-700/80 focus:via-blue-700 focus:to-blue-700/70 active:from-blue-700/80 active:via-blue-700 active:to-blue-700/70"
@@ -184,20 +196,7 @@ export default function Home({
                                     MeasureActive: !prevState.MeasureActive,
                                 }));
                             }}
-                        />
-                        <Menu
-                            title={"Daftar Pasien Baru"}
-                            icon={"fa-user-plus"}
-                            className={
-                                "from-blue-500/80 via-blue-500 to-blue-500/70 hover:from-blue-600/80 hover:via-blue-600 hover:to-blue-600/70 focus:from-blue-700/80 focus:via-blue-700 focus:to-blue-700/70 active:from-blue-700/80 active:via-blue-700 active:to-blue-700/70"
-                            }
-                            onClick={() => {
-                                setPopups((prevState) => ({
-                                    ...prevState,
-                                    PatientRegisterActive:
-                                        !prevState.PatientRegisterActive,
-                                }));
-                            }}
+                            disabled={true}
                         />
                         <Menu
                             title={"Cek Informasi Pasien"}
@@ -211,6 +210,7 @@ export default function Home({
                                     InfoActive: !prevState.InfoActive,
                                 }));
                             }}
+                            disabled={true}
                         />
                     </div>
                 </div>
@@ -234,6 +234,7 @@ export default function Home({
                                     MeasureActive: !prevState.MeasureActive,
                                 }));
                             }}
+                            disabled={true}
                         />
                         <Menu
                             title={"Cara Penggunaan"}
@@ -247,6 +248,7 @@ export default function Home({
                                     MeasureActive: !prevState.MeasureActive,
                                 }));
                             }}
+                            disabled={true}
                         />
                     </div>
                 </div>

@@ -61,13 +61,7 @@ export default function ConfirmPopup({
                 break;
 
             case "glucose":
-                Inertia.visit(
-                    route("v2.home.index", {
-                        _query: {
-                            state: "weight",
-                        },
-                    })
-                );
+                isWeightMeasure();
                 break;
 
             case "blood":

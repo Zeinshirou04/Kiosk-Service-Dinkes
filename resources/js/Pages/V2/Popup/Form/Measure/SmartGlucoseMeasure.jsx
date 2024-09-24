@@ -11,8 +11,15 @@ export default function GlucoseMeasure({
     const { data, setData, post, processing, errors, reset } = useForm({
         nik: nik,
         glucose: undefined,
+        kategori: undefined,
         dev_id: undefined,
     });
+
+    const handleGlucose = (glucose) => {
+        if (glucose < 200) return "Normal";
+        if (glucose >= 200) return "Diabetes";
+        return "Tidak Terdefinisi";
+    };
 
     const fetchData = async () => {
         try {
@@ -25,6 +32,7 @@ export default function GlucoseMeasure({
             setData((data) => ({
                 ...data,
                 glucose: temp.gula,
+                kategori: handleGlucose(temp.gula),
                 dev_id: temp.dev_id,
             }));
             // console.log(temp.gula);
@@ -109,7 +117,7 @@ export default function GlucoseMeasure({
                                 </div>
                             </div>
                             <div className="mt-8 px-12 flex flex-row gap-6">
-                                <p className="text-3xl"><strong>Keterangan:</strong> Tinggi</p>
+                                <p className="text-3xl"><strong>Keterangan:</strong> {data.kategori}</p>
                             </div>
                             <div className="px-12 mt-8 w-full grid grid-cols-4">
                                 <div className="w-full col-span-4">

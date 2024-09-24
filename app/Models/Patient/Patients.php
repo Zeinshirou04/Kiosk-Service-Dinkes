@@ -11,13 +11,16 @@ class Patients extends Authenticatable
 {
     use HasFactory;
 
+    protected $table = "patients_new";
+
     protected $fillable = [
         'nik',
         'nama_pasien',
-        'umur',
         'jenis_kelamin',
         'tgl_lahir',
-        'tempat_lahir',
+        'kecamatan',
+        'kelurahan',
+        'kabkota',
         'alamat',
         'no_hp'
     ];

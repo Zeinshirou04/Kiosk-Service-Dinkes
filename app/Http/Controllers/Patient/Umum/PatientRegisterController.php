@@ -33,7 +33,9 @@ class PatientRegisterController extends Controller
             return redirect(route('pasien.index', $hash));
         } catch (\Throwable $th) {
             // throw $th;
-            return redirect()->back();
+            return redirect()->back()->withErrors([
+                'sql' => $th->getMessage()
+            ]);
         }
     }
 }

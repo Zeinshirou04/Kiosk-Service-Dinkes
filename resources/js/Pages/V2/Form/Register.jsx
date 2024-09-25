@@ -6,7 +6,7 @@ export default function Register({}) {
     const { data, setData, post, processing, errors, reset } = useForm({
         nik: undefined,
         nama_pasien: undefined,
-        jenis_kelamin: undefined,
+        jenis_kelamin: "L",
         tgl_lahir: undefined,
         kecamatan: undefined,
         kelurahan: undefined,
@@ -17,7 +17,7 @@ export default function Register({}) {
     });
 
     const prevPage = "/v2";
-    console.log(prevPage);
+    console.log(errors.match);
 
     const handleSubmit = (e) => {
         e.preventDefault();

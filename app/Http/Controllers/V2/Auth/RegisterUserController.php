@@ -25,7 +25,7 @@ class RegisterUserController extends Controller
      */
     public function store(Request $request)
     {
-        // dd(Patients::where('nik', $request->nik)->first());
+        // dd($request);
         try {
             if (!Patients::where('nik', $request->nik)->first()) {
                 Patients::create($request->all());
@@ -33,8 +33,10 @@ class RegisterUserController extends Controller
             }
             if ($this->isAuthenticated($request)) return redirect()->to(route('v2.home.index', ['state' => 'weight']));
         } catch (\Throwable $th) {
-            throw $th;
-            // return redirect()->back();
+            // throw $th;
+            return redirect()->to(route('register.create'))->withErrors([
+                'match' => $th->getMessage()
+            ]);
         }
     }
 

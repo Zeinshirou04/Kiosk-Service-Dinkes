@@ -16,6 +16,8 @@ export default function GlucoseMeasure({
     });
 
     const handleGlucose = (glucose) => {
+        if (glucose < 70) return "Hipoglekimia";
+        if (glucose < 100) return "Kekurangan Gula Darah";
         if (glucose < 200) return "Normal";
         if (glucose >= 200) return "Diabetes";
         return "Tidak Terdefinisi";

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Guest from "@/Layouts/V2/GuestLayout";
 import Menu from "@/Components/V2/MenuItemsButton";
 import MeasureMenu from "./Popup/Menu/MeasureMenu";
@@ -36,6 +36,35 @@ export default function Home({
         GlucoseTutorialActive: false,
         BloodTutorialActive: false,
     });
+
+    const fetchWeather = () => {
+        const success = async (position) => {
+            const { latitude, longitude } = position.coords;
+            const API_URL = `https://api.openweathermap.org/geo/1.0/reverse`;
+            try {
+                const response = await axios.get(API_URL, {
+                    lat: latitude,
+                    lon: longitude,
+                    limit: 1,
+                    appid: import.meta.env.VITE_OPEN_WEATHER_KEY,
+                });
+                let data = response.data;
+                console.log(response);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        navigator.geolocation.getCurrentPosition(success);
+    };
+
+    // useEffect(() => {
+    //     const intervalId = setInterval(() => {
+    //         console.log("Fetching data...");
+    //         fetchWeather();
+    //     }, 3000);
+
+    //     return () => clearInterval(intervalId);
+    // }, []);
 
     return (
         <Guest
@@ -179,9 +208,7 @@ export default function Home({
                                 "from-blue-500/80 via-blue-500 to-blue-500/70 hover:from-blue-600/80 hover:via-blue-600 hover:to-blue-600/70 focus:from-blue-700/80 focus:via-blue-700 focus:to-blue-700/70 active:from-blue-700/80 active:via-blue-700 active:to-blue-700/70"
                             }
                             onClick={() => {
-                                Inertia.visit(
-                                    route("register.create")
-                                );
+                                Inertia.visit(route("register.create"));
                             }}
                         />
                         <Menu

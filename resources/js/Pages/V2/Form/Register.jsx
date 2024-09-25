@@ -1,5 +1,6 @@
 import Guest from "@/Layouts/V2/GuestLayout";
 import PrimaryButton from "@/Components/V2/PrimaryButton";
+import InputError from "@/Components/InputError";
 import { useForm } from "@inertiajs/react";
 
 export default function Register({}) {
@@ -50,7 +51,10 @@ export default function Register({}) {
                         </caption>
                     </section>
                     <section className="w-full">
-                        <form className="grid grid-cols-6 gap-4" onSubmit={handleSubmit}>
+                        <form
+                            className="grid grid-cols-6 gap-2"
+                            onSubmit={handleSubmit}
+                        >
                             <label
                                 htmlFor="nik"
                                 className="col-span-6 text-xl font-bold"
@@ -70,6 +74,10 @@ export default function Register({}) {
                                     setData("nik", e.target.value);
                                 }}
                             />
+                            <InputError
+                                className="col-span-6"
+                                message={errors.nik}
+                            />
                             <label
                                 htmlFor="nama_pasien"
                                 className="col-span-6 text-xl font-bold"
@@ -87,41 +95,61 @@ export default function Register({}) {
                                     setData("nama_pasien", e.target.value);
                                 }}
                             />
-                            <label
-                                htmlFor="tgl_lahir"
-                                className="col-span-4 text-xl font-bold"
-                            >
-                                Tanggal Lahir
-                            </label>
-                            <label
-                                htmlFor="jenis_kelamin"
-                                className="col-span-2 text-xl font-bold"
-                            >
-                                Kelamin
-                            </label>
-                            <input
-                                className="col-span-4 border-2 border-green-400 rounded-xl text-xl bg-gray-200"
-                                type="date"
-                                name="tgl_lahir"
-                                id="tgl_lahir"
-                                placeholder="12/02/2004"
-                                value={data.tgl_lahir}
-                                onChange={(e) => {
-                                    setData("tgl_lahir", e.target.value);
-                                }}
+                            <InputError
+                                className="col-span-6"
+                                message={errors.nama_pasien}
                             />
-                            <select
-                                className="col-span-2 border-2 border-green-400 rounded-xl text-xl bg-gray-200"
-                                name="jenis_kelamin"
-                                id="jenis_kelamin"
-                                value={data.jenis_kelamin}
-                                onChange={(e) => {
-                                    setData("jenis_kelamin", e.target.value);
-                                }}
-                            >
-                                <option value="L">Laki-Laki</option>
-                                <option value="P">Perempuan</option>
-                            </select>
+                            <div className="col-span-4 flex flex-col gap-2">
+                                <label
+                                    htmlFor="tgl_lahir"
+                                    className="w-full text-xl font-bold"
+                                >
+                                    Tanggal Lahir
+                                </label>
+                                <input
+                                    className="w-full border-2 border-green-400 rounded-xl text-xl bg-gray-200"
+                                    type="date"
+                                    name="tgl_lahir"
+                                    id="tgl_lahir"
+                                    placeholder="12/02/2004"
+                                    value={data.tgl_lahir}
+                                    onChange={(e) => {
+                                        setData("tgl_lahir", e.target.value);
+                                    }}
+                                />
+
+                                <InputError
+                                    className="w-full"
+                                    message={errors.tgl_lahir}
+                                />
+                            </div>
+                            <div className="col-span-2 flex flex-col gap-2">
+                                <label
+                                    htmlFor="jenis_kelamin"
+                                    className="w-full text-xl font-bold"
+                                >
+                                    Kelamin
+                                </label>
+                                <select
+                                    className="w-full border-2 border-green-400 rounded-xl text-xl bg-gray-200"
+                                    name="jenis_kelamin"
+                                    id="jenis_kelamin"
+                                    value={data.jenis_kelamin}
+                                    onChange={(e) => {
+                                        setData(
+                                            "jenis_kelamin",
+                                            e.target.value
+                                        );
+                                    }}
+                                >
+                                    <option value="L">Laki-Laki</option>
+                                    <option value="P">Perempuan</option>
+                                </select>
+                                <InputError
+                                    className="w-full"
+                                    message={errors.jenis_kelamin}
+                                />
+                            </div>
                             <label
                                 htmlFor="alamat"
                                 className="col-span-6 text-xl font-bold"
@@ -146,74 +174,98 @@ export default function Register({}) {
                                     Provinsi
                                 </p>
                             </div>
-                            <label
-                                htmlFor="kecamatan"
-                                className="col-span-3 text-xl font-bold"
-                            >
-                                Kecamatan
-                            </label>
-                            <label
-                                htmlFor="kelurahan"
-                                className="col-span-3 text-xl font-bold"
-                            >
-                                Kelurahan/Desa
-                            </label>
-                            <input
-                                className="col-span-3 border-2 border-green-400 rounded-xl text-xl bg-gray-200"
-                                type="text"
-                                name="kecamatan"
-                                id="kecamatan"
-                                placeholder="Contoh: Kendal"
-                                value={data.kecamatan}
-                                onChange={(e) => {
-                                    setData('kecamatan', e.target.value)
-                                }}
-                            />
-                            <input
-                                className="col-span-3 border-2 border-green-400 rounded-xl text-xl bg-gray-200"
-                                type="text"
-                                name="kelurahan"
-                                id="kelurahan"
-                                placeholder="Contoh: Tembalang"
-                                value={data.kelurahan}
-                                onChange={(e) => {
-                                    setData('kelurahan', e.target.value)
-                                }}
-                            />
-                            <label
-                                htmlFor="kabkota"
-                                className="col-span-3 text-xl font-bold"
-                            >
-                                Kab/Kota
-                            </label>
-                            <label
-                                htmlFor="no_hp"
-                                className="col-span-3 text-xl font-bold"
-                            >
-                                No Whatsapp (WA)
-                            </label>
-                            <input
-                                className="col-span-3 border-2 border-green-400 rounded-xl text-xl bg-gray-200"
-                                type="text"
-                                name="kabkota"
-                                id="kabkota"
-                                placeholder="Contoh: Semarang Tengah"
-                                value={data.kabkota}
-                                onChange={(e) => {
-                                    setData('kabkota', e.target.value)
-                                }}
-                            />
-                            <input
-                                className="col-span-3 border-2 border-green-400 rounded-xl text-xl bg-gray-200"
-                                type="number"
-                                name="no_hp"
-                                id="no_hp"
-                                placeholder="Contoh: 0812****1998"
-                                value={data.no_hp}
-                                onChange={(e) => {
-                                    setData('no_hp', e.target.value)
-                                }}
-                            />
+                            <div className="col-span-3 flex flex-col gap-2">
+                                <label
+                                    htmlFor="kecamatan"
+                                    className="w-full text-xl font-bold"
+                                >
+                                    Kecamatan
+                                </label>
+                                <input
+                                    className="w-full border-2 border-green-400 rounded-xl text-xl bg-gray-200"
+                                    type="text"
+                                    name="kecamatan"
+                                    id="kecamatan"
+                                    placeholder="Contoh: Kendal"
+                                    value={data.kecamatan}
+                                    onChange={(e) => {
+                                        setData("kecamatan", e.target.value);
+                                    }}
+                                />
+                                <InputError
+                                    className="w-full"
+                                    message={errors.kecamatan}
+                                />
+                            </div>
+                            <div className="col-span-3 flex flex-col gap-2">
+                                <label
+                                    htmlFor="kelurahan"
+                                    className="w-full text-xl font-bold"
+                                >
+                                    Kelurahan/Desa
+                                </label>
+                                <input
+                                    className="w-full border-2 border-green-400 rounded-xl text-xl bg-gray-200"
+                                    type="text"
+                                    name="kelurahan"
+                                    id="kelurahan"
+                                    placeholder="Contoh: Tembalang"
+                                    value={data.kelurahan}
+                                    onChange={(e) => {
+                                        setData("kelurahan", e.target.value);
+                                    }}
+                                />
+                                <InputError
+                                    className="w-full"
+                                    message={errors.kelurahan}
+                                />
+                            </div>
+                            <div className="col-span-3 flex flex-col gap-2">
+                                <label
+                                    htmlFor="kabkota"
+                                    className="w-full text-xl font-bold"
+                                >
+                                    Kab/Kota
+                                </label>
+                                <input
+                                    className="w-full border-2 border-green-400 rounded-xl text-xl bg-gray-200"
+                                    type="text"
+                                    name="kabkota"
+                                    id="kabkota"
+                                    placeholder="Contoh: Semarang Tengah"
+                                    value={data.kabkota}
+                                    onChange={(e) => {
+                                        setData("kabkota", e.target.value);
+                                    }}
+                                />
+                                <InputError
+                                    className="w-full"
+                                    message={errors.kabkota}
+                                />
+                            </div>
+                            <div className="col-span-3 flex flex-col gap-2">
+                                <label
+                                    htmlFor="no_hp"
+                                    className="w-full text-xl font-bold"
+                                >
+                                    No Whatsapp (WA)
+                                </label>
+                                <input
+                                    className="w-full border-2 border-green-400 rounded-xl text-xl bg-gray-200"
+                                    type="number"
+                                    name="no_hp"
+                                    id="no_hp"
+                                    placeholder="Contoh: 0812****1998"
+                                    value={data.no_hp}
+                                    onChange={(e) => {
+                                        setData("no_hp", e.target.value);
+                                    }}
+                                />
+                                <InputError
+                                    className="w-full"
+                                    message={errors.no_hp}
+                                />
+                            </div>
                             <PrimaryButton
                                 className="col-span-2"
                                 text={"Daftar"}

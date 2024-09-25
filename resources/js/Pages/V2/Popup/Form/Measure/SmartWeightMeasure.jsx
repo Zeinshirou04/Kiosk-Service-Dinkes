@@ -12,7 +12,7 @@ export default function WeightMeasure({
         nik: nik,
         berat: undefined,
         tinggi: undefined,
-        bmi: undefined,
+        bmi: 0.0,
         kategori: "Tidak Terdefinisi",
         dev_id: undefined,
     });

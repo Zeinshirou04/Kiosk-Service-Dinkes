@@ -90,6 +90,7 @@ export default function Home({
                 setActive={setPopups}
                 isAuthenticated={isAuthenticated}
                 measure={measure}
+                no_hp={no_hp}
             />
             <Guide
                 state={state}

@@ -5,6 +5,7 @@ import ConfirmPopup from "./ConfirmationPopup";
 export default function Confirm({
     isActive,
     setActive,
+    no_hp,
     state = "none",
     isAuthenticated = false,
     measure,
@@ -71,7 +72,7 @@ export default function Confirm({
             break;
 
         case "confirmation":
-            text = "Apakah anda ingin mengulang pengukuran? (Cetak)";
+            text = "Apakah anda ingin mengulang pengukuran atau melakukan kirim wa?";
 
             keterangan = handleBlood(measure.b_atas, measure.b_bawah);
             preview = (
@@ -83,7 +84,7 @@ export default function Confirm({
                 </article>
             );
             confirmMessage = "Ya, Ulangi";
-            declineMessage = "Tidak, Cetak";
+            declineMessage = "Tidak, Kirim WA";
             break;
 
         case "finished":
@@ -132,6 +133,7 @@ export default function Confirm({
                         isAuthenticated={isAuthenticated}
                         state={state}
                         preview={preview}
+                        no_hp={no_hp}
                     />
                 </div>
             </div>

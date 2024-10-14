@@ -18,12 +18,13 @@ export default function BloodMeasure({
     });
 
     const handleBlood = (sistole, diastole) => {
-        if(sistole == 0 & diastole == 0) return "Tidak Terdefinisi"
+        if ((sistole == 0) & (diastole == 0)) return "Tidak Terdefinisi";
         if (sistole < 120 && diastole < 80) return "Normal";
         if (sistole < 139 && diastole < 89) return "Pra Hipertensi";
         if (sistole < 159 && diastole < 99) return "Hipertensi Tingkat 1";
         if (sistole >= 160 && diastole >= 100) return "Hipertensi Tingkat 2";
-        if (sistole > 140 && diastole < 90) return "Hipertensi Sistolik Terisolasi";
+        if (sistole > 140 && diastole < 90)
+            return "Hipertensi Sistolik Terisolasi";
         return "Tidak Terdefinisi";
     };
 
@@ -148,25 +149,12 @@ export default function BloodMeasure({
                                         <InputError />
                                     </div>
                                 </div>
-                                <div className="col-span-3 grid grid-rows-2 grid-cols-3">
-                                    <label
-                                        htmlFor="nik"
-                                        className="text-4xl col-span-3"
-                                    >
-                                        Kategori
-                                    </label>
-                                    <div className="col-span-3">
-                                        <input
-                                            required={true}
-                                            type="text"
-                                            name="denyut"
-                                            id="denyut"
-                                            value={data.kategori}
-                                            className="text-4xl rounded-lg w-full border border-green-500"
-                                        />
-                                        <InputError />
-                                    </div>
-                                </div>
+                            </div>
+
+                            <div className="mt-8 px-12 flex flex-row gap-6">
+                                <p className="text-3xl">
+                                    <strong>Keterangan:</strong> {data.kategori}
+                                </p>
                             </div>
                             <div className="px-12 mt-8 w-full grid grid-cols-4">
                                 <div className="w-full col-span-4">

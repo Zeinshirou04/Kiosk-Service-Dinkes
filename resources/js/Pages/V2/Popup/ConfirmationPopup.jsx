@@ -1,4 +1,3 @@
-import { useState } from "react";
 import PrimaryButton from "@/Components/V2/PrimaryButton";
 import DangerButton from "@/Components/V2/DangerButton";
 import { Inertia } from "@inertiajs/inertia";
@@ -8,6 +7,7 @@ export default function ConfirmPopup({
     isActive = false,
     setActive,
     text,
+    no_hp,
     confirmMessage = "Sudah",
     declineMessage = "Belum",
     isAuthenticated = false,
@@ -51,6 +51,38 @@ export default function ConfirmPopup({
                 BloodTutorialActive: !prevState.BloodTutorialActive,
             }));
         }, 500);
+    };
+
+    const messageWhatsapp = async () => {
+        try {
+            const response = await axios
+                .post(
+                    "https://api.watzap.id/v1/send_message",
+                    {
+                        api_key: import.meta.env.VITE_WATZAPP_API_KEY,
+                        number_key: import.meta.env.VITE_WATZAPP_NUMBER_KEY,
+                        phone_no: no_hp.toString().replace(/^0/, "62"),
+                        message:
+                            "Halo, Permisi Sobat Pasien! Silahkan akses link berikut untuk melihat hasil pengukuran anda! Link Hasil Pengukuran: https://***/",
+                    },
+                    {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    }
+                )
+                .then(() => {
+                    Inertia.visit(
+                        route("v2.home.index", {
+                            _query: {
+                                state: "finished",
+                            },
+                        })
+                    );
+                });
+        } catch (err) {
+            console.error(err);
+        }
     };
 
     const handleConfirm = () => {
@@ -105,19 +137,11 @@ export default function ConfirmPopup({
                 break;
 
             case "confirmation":
-                Inertia.visit(
-                    route("v2.home.index", {
-                        _query: {
-                            state: "finished",
-                        },
-                    })
-                );
+                messageWhatsapp();
                 break;
 
             case "finished":
-                Inertia.visit(
-                    route("logout.attempt")
-                );
+                Inertia.visit(route("logout.attempt"));
                 break;
 
             default:

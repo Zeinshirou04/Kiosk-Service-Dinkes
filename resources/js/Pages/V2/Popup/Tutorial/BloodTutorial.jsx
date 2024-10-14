@@ -20,12 +20,15 @@ export default function BloodTutorial({
                             Ambil alat tesi meter yg berada pada disamping kiri
                             anda.
                         </li>
+                        <li>
+                            Ambillah posisi duduk dengan kursi yang tersedia.
+                        </li>
                         <li className="mt-2">
                             Rekatkan tensi meter pada. pergelangan tangan.
                         </li>
                         <li className="mt-2">
                             Posisikan alat menghadap arah yang sama dengan
-                            telapak tangan.
+                            telapak tangan atau searah dengan nadi.
                         </li>
                         <li className="mt-2">Tekan tombol OK.</li>
                         <li className="mt-2">

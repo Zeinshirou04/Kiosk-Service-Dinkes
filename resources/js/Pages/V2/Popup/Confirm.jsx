@@ -6,6 +6,7 @@ export default function Confirm({
     isActive,
     setActive,
     no_hp,
+    nik,
     state = "none",
     isAuthenticated = false,
     measure,
@@ -134,6 +135,7 @@ export default function Confirm({
                         state={state}
                         preview={preview}
                         no_hp={no_hp}
+                        nik={nik}
                     />
                 </div>
             </div>

@@ -28,6 +28,7 @@ class PatientGlucoseController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $glucose = MeasureGlucose::where('nik', $id)->select('glucose')->latest()->first();
+        dd($glucose);
     }
 }

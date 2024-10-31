@@ -91,6 +91,7 @@ export default function Home({
                 isAuthenticated={isAuthenticated}
                 measure={measure}
                 no_hp={no_hp}
+                nik={nik}
             />
             <Guide
                 state={state}

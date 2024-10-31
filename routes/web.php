@@ -67,11 +67,9 @@ Route::prefix('v2')->group(function () {
     Route::prefix('measure')->group(function () {
         Route::resource('/weight', PatientWeightController::class)->only([
             'store',
-            'show'
         ]);
         Route::resource('/glucose', PatientGlucoseController::class)->only([
             'store',
-            'show'
         ]);
         Route::prefix('tension')->group(function () {
             Route::post('/', [PatientTensionController::class, 'store'])->name('patient.tension.store');

@@ -8,6 +8,7 @@ export default function ConfirmPopup({
     setActive,
     text,
     no_hp,
+    nik,
     confirmMessage = "Sudah",
     declineMessage = "Belum",
     isAuthenticated = false,
@@ -55,7 +56,12 @@ export default function ConfirmPopup({
 
     const messageWhatsapp = async () => {
         try {
-            const response = await axios
+            const response = await axios.get(route("patient.print.pdf", {
+                nik: nik,
+            }))
+            // console.log(response.data);
+            
+            await axios
                 .post(
                     "https://api.watzap.id/v1/send_message",
                     {
@@ -63,7 +69,7 @@ export default function ConfirmPopup({
                         number_key: import.meta.env.VITE_WATZAPP_NUMBER_KEY,
                         phone_no: no_hp.toString().replace(/^0/, "62"),
                         message:
-                            "Halo, Permisi Sobat Pasien! Silahkan akses link berikut untuk melihat hasil pengukuran anda! Link Hasil Pengukuran: https://***/",
+                            `Halo, Permisi Sobat Pasien! Silahkan akses link berikut untuk melihat hasil pengukuran anda! Link Hasil Pengukuran: ${response.data.url}`,
                     },
                     {
                         headers: {

@@ -49,7 +49,7 @@ class PatientPrintController extends Controller
         Storage::put('public/pdf/report/patient/' . $filename, $output);
         return response()->json([
             "status" => "Report Successfully Generated",
-            "url" => url("https://kiosk.robotlintang.id/pdf/pasien/" . $filename)
+            "url" => url("https://kiosk.robotlintang.id/pdf/report/patient/" . $filename)
         ]);
 
     }

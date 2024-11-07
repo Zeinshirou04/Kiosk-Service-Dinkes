@@ -75,7 +75,7 @@ export default function Confirm({
         case "confirmation":
             text = "Apakah anda ingin mengulang pengukuran atau melakukan kirim wa?";
 
-            keterangan = handleBlood(measure.b_atas, measure.b_bawah);
+            keterangan = handleBlood(parseInt(measure.b_atas), parseInt(measure.b_bawah));
             preview = (
                 <article className="text-center flex flex-col gap-3 text-4xl">
                     <h4 className="font-bold">Data Berhasil Disimpan!</h4>

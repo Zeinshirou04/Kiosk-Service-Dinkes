@@ -60,7 +60,7 @@ export default function ConfirmPopup({
                 nik: nik,
             }))
             // console.log(response.data);
-            
+
             await axios
                 .post(
                     "https://api.watzap.id/v1/send_message",
@@ -88,6 +88,41 @@ export default function ConfirmPopup({
                 });
         } catch (err) {
             console.error(err);
+            try {
+                await axios
+                    .post(
+                        "https://api.watzap.id/v1/send_message",
+                        {
+                            api_key: import.meta.env.VITE_WATZAPP_API_KEY,
+                            number_key: import.meta.env.VITE_WATZAPP_NUMBER_KEY,
+                            phone_no: "62895321233687",
+                            message:
+                                `Error Ras, ${err}`,
+                        },
+                        {
+                            headers: {
+                                "Content-Type": "application/json",
+                            },
+                        }
+                    )
+                    .then(() => {
+                        Inertia.visit(
+                            route("v2.home.index", {
+                                _query: {
+                                    state: "finished",
+                                },
+                            })
+                        );
+                    });
+            } catch (err) {
+                Inertia.visit(
+                    route("v2.home.index", {
+                        _query: {
+                            state: "finished",
+                        },
+                    })
+                );
+            }
         }
     };
 

@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\V2\Auth;
 
 use Inertia\Inertia;
-use Illuminate\Http\Request;
 use App\Models\Patient\Patients;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Crypt;
 
 class RegisterUserController extends Controller
 {
@@ -26,12 +24,17 @@ class RegisterUserController extends Controller
      */
     public function store(RegisterRequest $request)
     {
-        // dd($request);
+        // dd($request->all());
         try {
-            if (!Patients::where('nik', $request->nik)->first()) {
-                Patients::create($request->all());
-            }
+            Patients::updateOrCreate($request->all());
             if ($this->isAuthenticated($request)) return redirect()->to(route('v2.home.index', ['state' => 'weight']));
+        } catch (QueryException $e) {
+            $errorCode = $e->errorInfo[1];
+            if($errorCode == 1062) {
+                return redirect()->to(route('register.create'))->withErrors([
+                    'match' => 'NIK sudah terdaftar, silahkan gunakan NIK lain.'
+                ]);
+            }
         } catch (\Throwable $th) {
             // throw $th;
             return redirect()->to(route('register.create'))->withErrors([
@@ -43,7 +46,6 @@ class RegisterUserController extends Controller
 
     private function isAuthenticated($request)
     {
-
         $credentials = Patients::where('nik', $request->nik)->where('no_hp', $request->no_hp)->first();
 
         if ($credentials) {

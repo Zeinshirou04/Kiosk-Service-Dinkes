@@ -11,6 +11,8 @@ class Patients extends Authenticatable
 {
     use HasFactory;
 
+    // protected $primaryKey = 'nik';
+
     protected $table = "patients_new";
 
     protected $fillable = [

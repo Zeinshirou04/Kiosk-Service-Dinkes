@@ -21,6 +21,7 @@ class LoginSessionController extends Controller
 
     public function find(LoginRequest $request)
     {
+        // dd($request->all());
         if ($this->isAuthenticated($request)) return redirect()->to(route('v2.home.index', ['state' => 'weight']));
         return redirect()->to(route('login.create'))->withErrors([
             'match' => 'Informasi yang anda masukkan tidak terdaftar'
@@ -41,10 +42,11 @@ class LoginSessionController extends Controller
     {
 
         $credentials = Patients::where('nik', $request->nik)->where('no_hp', $request->no_hp)->first();
-
+        // dd($credentials);
         if ($credentials) {
-
+            
             Auth::login($credentials);
+            // dd(Auth::user());
 
             return true;
         };

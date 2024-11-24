@@ -73,7 +73,8 @@ export default function Confirm({
             break;
 
         case "confirmation":
-            text = "Apakah anda ingin mengulang pengukuran atau melakukan kirim wa?";
+            let no_hp_sent = no_hp.toString().indexOf('8') == 0 ? `62${no_hp}` : no_hp.toString();
+            text = `Apakah anda ingin mengulang pengukuran atau melakukan kirim wa ke +${no_hp_sent}?`;
 
             keterangan = handleBlood(parseInt(measure.b_atas), parseInt(measure.b_bawah));
             preview = (

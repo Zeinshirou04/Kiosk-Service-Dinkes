@@ -2,27 +2,37 @@ import Guest from "@/Layouts/V2/GuestLayout";
 import PrimaryButton from "@/Components/V2/PrimaryButton";
 import InputError from "@/Components/InputError";
 import { useForm } from "@inertiajs/react";
+import { useEffect } from "react";
 
-export default function Register({}) {
+export default function Register({ }) {
     const { data, setData, post, processing, errors, reset } = useForm({
-        nik: undefined,
-        nama_pasien: undefined,
+        nik: null,
+        nama_pasien: '',
         jenis_kelamin: "L",
-        tgl_lahir: undefined,
-        kecamatan: undefined,
-        kelurahan: undefined,
-        kabkota: undefined,
-        alamat: undefined,
-        no_hp: undefined,
-        kode: undefined,
+        tgl_lahir: '',
+        kecamatan: '',
+        kelurahan: '',
+        kabkota: '',
+        alamat: '',
+        no_hp: null,
     });
 
     const prevPage = "/v2";
-    console.log(errors.match);
+
+    const changeData = (e) => {
+        setData(prevState => ({
+            ...prevState,
+            [e.target.name]: e.target.value
+        }))
+    }
+
+    useEffect(() => {
+        console.log(data);
+    }, [data]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
+        console.log(data);
         post(route("register.store"));
     };
 
@@ -70,13 +80,11 @@ export default function Register({}) {
                                 maxLength={16}
                                 placeholder="Contoh: 357601********03"
                                 value={data.nik}
-                                onChange={(e) => {
-                                    setData("nik", e.target.value);
-                                }}
+                                onChange={changeData}
                             />
                             <InputError
                                 className="col-span-6"
-                                message={errors.nik}
+                                message={errors.nik ? errors.nik : errors.match}
                             />
                             <label
                                 htmlFor="nama_pasien"
@@ -91,9 +99,7 @@ export default function Register({}) {
                                 id="nama_pasien"
                                 placeholder="Contoh: Ahmad Yani"
                                 value={data.nama_pasien}
-                                onChange={(e) => {
-                                    setData("nama_pasien", e.target.value);
-                                }}
+                                onChange={changeData}
                             />
                             <InputError
                                 className="col-span-6"
@@ -113,9 +119,7 @@ export default function Register({}) {
                                     id="tgl_lahir"
                                     placeholder="12/02/2004"
                                     value={data.tgl_lahir}
-                                    onChange={(e) => {
-                                        setData("tgl_lahir", e.target.value);
-                                    }}
+                                    onChange={changeData}
                                 />
 
                                 <InputError
@@ -135,12 +139,7 @@ export default function Register({}) {
                                     name="jenis_kelamin"
                                     id="jenis_kelamin"
                                     value={data.jenis_kelamin}
-                                    onChange={(e) => {
-                                        setData(
-                                            "jenis_kelamin",
-                                            e.target.value
-                                        );
-                                    }}
+                                    onChange={changeData}
                                 >
                                     <option value="L">Laki-Laki</option>
                                     <option value="P">Perempuan</option>
@@ -164,9 +163,7 @@ export default function Register({}) {
                                     id="alamat"
                                     placeholder="Contoh: Jl. Imam Bonjol No. 30"
                                     value={data.alamat}
-                                    onChange={(e) => {
-                                        setData("alamat", e.target.value);
-                                    }}
+                                    onChange={changeData}
                                 />
                                 <p className="col-span-6 text-md text-red-500 italic">
                                     *Alamat hanya berisikan Jalan, Nomor Rumah
@@ -188,9 +185,7 @@ export default function Register({}) {
                                     id="kecamatan"
                                     placeholder="Contoh: Kendal"
                                     value={data.kecamatan}
-                                    onChange={(e) => {
-                                        setData("kecamatan", e.target.value);
-                                    }}
+                                    onChange={changeData}
                                 />
                                 <InputError
                                     className="w-full"
@@ -211,9 +206,7 @@ export default function Register({}) {
                                     id="kelurahan"
                                     placeholder="Contoh: Tembalang"
                                     value={data.kelurahan}
-                                    onChange={(e) => {
-                                        setData("kelurahan", e.target.value);
-                                    }}
+                                    onChange={changeData}
                                 />
                                 <InputError
                                     className="w-full"
@@ -234,9 +227,7 @@ export default function Register({}) {
                                     id="kabkota"
                                     placeholder="Contoh: Semarang Tengah"
                                     value={data.kabkota}
-                                    onChange={(e) => {
-                                        setData("kabkota", e.target.value);
-                                    }}
+                                    onChange={changeData}
                                 />
                                 <InputError
                                     className="w-full"
@@ -257,9 +248,7 @@ export default function Register({}) {
                                     id="no_hp"
                                     placeholder="Contoh: 0812****1998"
                                     value={data.no_hp}
-                                    onChange={(e) => {
-                                        setData("no_hp", e.target.value);
-                                    }}
+                                    onChange={changeData}
                                 />
                                 <InputError
                                     className="w-full"

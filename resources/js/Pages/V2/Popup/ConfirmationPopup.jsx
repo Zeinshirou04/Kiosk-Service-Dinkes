@@ -67,7 +67,7 @@ export default function ConfirmPopup({
                     {
                         api_key: import.meta.env.VITE_WATZAPP_API_KEY,
                         number_key: import.meta.env.VITE_WATZAPP_NUMBER_KEY,
-                        phone_no: no_hp.toString().indexOf('0') == 0 ? no_hp.toString().replace(/^0/, "62") : no_hp.toString(),
+                        phone_no: no_hp.toString().indexOf('8') == 0 ? `62${no_hp}` : no_hp.toString(),
                         message:
                             `Halo, Permisi Sobat Pasien! Silahkan akses link berikut untuk melihat hasil pengukuran anda! Link Hasil Pengukuran: ${response.data.url}`,
                     },

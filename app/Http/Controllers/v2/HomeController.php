@@ -16,12 +16,8 @@ class HomeController extends Controller
     private $data = [];
 
     public function index(Request $request) {
-
-
         try {
-            //code...
             if(Auth::check()) $patient = Auth::user();
-    
             $this->data = [
                 'nik' => $patient->nik,
                 'no_hp' => $patient->no_hp,
@@ -48,7 +44,8 @@ class HomeController extends Controller
         } catch (\Throwable $th) {
 
         }
-
+        // dd($patient);
+        // dd($this->data);
         return Inertia::render('V2/Home', $this->data);
     }
 

@@ -4,12 +4,19 @@ import { useForm } from "@inertiajs/react";
 
 export default function Login() {
     const { data, setData, post, processing, errors, reset } = useForm({
-        nik: undefined,
-        no_hp: undefined,
+        nik: null,
+        no_hp: null,
         kode: undefined,
     });
 
     const prevPage = "/v2";
+
+    const updateData = (e) => {
+        setData({
+            ...data,
+            [e.target.name]: e.target.value
+        })
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -62,9 +69,7 @@ export default function Login() {
                                 name="nik"
                                 id="nik"
                                 value={data.nik}
-                                onChange={(e) => {
-                                    setData("nik", e.target.value);
-                                }}
+                                onChange={updateData}
                                 placeholder="Contoh: 357601********03"
                                 required
                             />
@@ -80,9 +85,7 @@ export default function Login() {
                                 name="no_hp"
                                 id="no_hp"
                                 value={data.no_hp}
-                                onChange={(e) => {
-                                    setData("no_hp", e.target.value);
-                                }}
+                                onChange={updateData}
                                 placeholder="Contoh: 0812****1998"
                                 required
                             />
@@ -95,13 +98,11 @@ export default function Login() {
                             <input
                                 className="col-span-2 border-2 border-green-400 rounded-xl text-xl bg-gray-200 tex"
                                 type="number"
-                                maxlength="6"
+                                maxLength="6"
                                 name="kode"
                                 id="kode"
                                 value={data.kode}
-                                onChange={(e) => {
-                                    setData("kode", e.target.value);
-                                }}
+                                onChange={updateData}
                                 placeholder="Contoh: 123456"
                             />
                             <div className="col-span-4"></div>

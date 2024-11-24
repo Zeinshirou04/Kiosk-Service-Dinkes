@@ -35,10 +35,6 @@ class PatientPrintController extends Controller
             'patient' => $patient
         ];
 
-        // return view("raport.pdf", $data);
-
-        // dd($data);
-
         $dompdf = new Dompdf();
 
         $dompdf->loadHtml(view("raport.pdf", $data));

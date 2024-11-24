@@ -15,7 +15,9 @@ use App\Http\Controllers\V2\Measure\PatientGlucoseController;
 use App\Http\Controllers\V2\Measure\PatientTensionController;
 use App\Http\Controllers\V2\Measure\PatientWeightController;
 
-Route::get('/', [MenuController::class, 'index'])->name('menu.index');
+Route::get('/', function () {
+    return redirect()->route('v2.home.index');
+});
 
 Route::prefix('umum')->group(function () {
     Route::get('/', [MenuController::class, 'umum'])->name('menu.umum');

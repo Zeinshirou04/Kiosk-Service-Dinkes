@@ -1,6 +1,7 @@
 import PrimaryButton from "@/Components/V2/PrimaryButton";
 import DangerButton from "@/Components/V2/DangerButton";
 import { Inertia } from "@inertiajs/inertia";
+import print from "print-js";
 
 export default function ConfirmPopup({
     title = undefined,
@@ -78,6 +79,8 @@ export default function ConfirmPopup({
                     }
                 )
                 .then(() => {
+                    const pdfURL = `https://kiosk.robotlintang.id/pdf/report/patient/Laporan-${nik}.pdf`; 
+                    print(pdfURL);
                     Inertia.visit(
                         route("v2.home.index", {
                             _query: {

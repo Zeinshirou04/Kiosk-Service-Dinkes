@@ -2,6 +2,8 @@ import PrimaryButton from "@/Components/V2/PrimaryButton";
 import DangerButton from "@/Components/V2/DangerButton";
 import { Inertia } from "@inertiajs/inertia";
 import print from "print-js";
+import { useState } from "react";
+import printJS from "print-js";
 
 export default function ConfirmPopup({
     title = undefined,
@@ -16,6 +18,9 @@ export default function ConfirmPopup({
     state = "none",
     preview = undefined,
 }) {
+
+    const [pdfUrl, setPdfUrl] = useState('');
+
     const isWeightMeasure = () => {
         setActive((prevState) => ({
             ...prevState,
@@ -79,15 +84,21 @@ export default function ConfirmPopup({
                     }
                 )
                 .then(() => {
-                    const pdfURL = `https://kiosk.robotlintang.id/pdf/report/patient/Laporan-${nik}.pdf`; 
-                    print(pdfURL);
-                    Inertia.visit(
-                        route("v2.home.index", {
-                            _query: {
-                                state: "finished",
-                            },
-                        })
-                    );
+                    const pdfURL = `https://kiosk.robotlintang.id/pdf/report/patient/Laporan-${nik}.pdf`;
+                    try {
+                        printJS(pdfURL);
+                        setTimeout(() => {
+                            Inertia.visit(
+                                route("v2.home.index", {
+                                    _query: {
+                                        state: "finished",
+                                    },
+                                })
+                            );
+                        }, 3000);
+                    } catch (error) {
+                        console.error(error);
+                    }
                 });
         } catch (err) {
             console.error(err);

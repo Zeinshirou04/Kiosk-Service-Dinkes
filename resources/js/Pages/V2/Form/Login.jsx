@@ -1,6 +1,7 @@
 import Guest from "@/Layouts/V2/GuestLayout";
 import PrimaryButton from "@/Components/V2/PrimaryButton";
 import { useForm } from "@inertiajs/react";
+import InputError from "@/Components/InputError";
 
 export default function Login() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -73,6 +74,10 @@ export default function Login() {
                                 placeholder="Contoh: 357601********03"
                                 required
                             />
+                            <InputError
+                                className="col-span-6"
+                                message={errors.nik ? errors.nik : errors.match}
+                            />
                             <label
                                 htmlFor="no_hp"
                                 className="col-span-6 text-xl font-bold"
@@ -88,6 +93,10 @@ export default function Login() {
                                 onChange={updateData}
                                 placeholder="Contoh: 0812****1998"
                                 required
+                            />
+                            <InputError
+                                className="col-span-6"
+                                message={errors.no_hp ? errors.no_hp : errors.match}
                             />
                             <label
                                 htmlFor="nik"

@@ -2,9 +2,21 @@ import Guest from "@/Layouts/V2/GuestLayout";
 import PrimaryButton from "@/Components/V2/PrimaryButton";
 import InputError from "@/Components/InputError";
 import { useForm } from "@inertiajs/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Register({ }) {
+
+    const [ provinsi, setProvinsi ]                 = useState()
+    const [ kota, setKota ]                         = useState()
+    const [ kecamatan, setKecamatan ]               = useState()
+    const [ kelurahan, setKelurahan ]               = useState()
+
+    const [ provinsiPilihan, setProvinsiPilihan ]   = useState(0)
+    const [ kotaPilihan, setKotaPilihan ]           = useState()
+    const [ kecamatanPilihan, setKecamatanPilihan ] = useState()
+    const [ kelurahaPilihan, setKelurahanPilihan ]  = useState()
+
     const { data, setData, post, processing, errors, reset } = useForm({
         nik: null,
         nama_pasien: '',
@@ -19,21 +31,86 @@ export default function Register({ }) {
 
     const prevPage = "/v2";
 
-    const changeData = (e) => {
+    const changeData = (e, key) => {
+        console.log(key)
         setData(prevState => ({
             ...prevState,
             [e.target.name]: e.target.value
         }))
+
+        kota ? kecamatan ? kelurahan ? alert('done') : getKelurahan(key) : getKecamatan(key) : getKota(key)
+        
     }
 
+    const getKota = async (chosen) => {   
+        const provinsi = await axios.get('http://119.2.50.170/sendpusk/api/migrasi/sip/masterkotakabsatset/');
+        console.log(provinsi.data)
+        const kotaRaw = []
+        provinsi.data.forEach(element => {
+            if(element.kode_parent == chosen){
+                kotaRaw.push(element)
+            }
+        })
+        setKota(kotaRaw)
+    }
+
+    const getKecamatan = async (chosen) => {   
+        const provinsi = await axios.get('http://119.2.50.170/sendpusk/api/migrasi/sip/masterkecamatansatset/');
+        console.log(provinsi.data)
+        const kotaRaw = []
+        provinsi.data.forEach(element => {
+            if(element.kode_parent == chosen){
+                kotaRaw.push(element)
+            }
+        })
+        setKecamatan(kotaRaw)
+    }
+
+    const getKelurahan = async (chosen) => {   
+        const provinsi = await axios.get('http://119.2.50.170/sendpusk/api/migrasi/sip/masterkelurahansatset/');
+        console.log(provinsi.data)
+        const kotaRaw = []
+        provinsi.data.forEach(element => {
+            if(element.kode_parent == chosen){
+                kotaRaw.push(element)
+            }
+        })
+        setKelurahan(kotaRaw)
+    }
+
+
     useEffect(() => {
-        console.log(data);
-    }, [data]);
+        const fetchData = async () => {
+            try {
+
+                // const kota = await axios.get('http://119.2.50.170/sendpusk/api/migrasi/sip/masterkotakabsatset/');
+                // setKota(kota.data);
+                // console.log(kota.data)
+
+                const provinsi = await axios.get('http://119.2.50.170/sendpusk/api/migrasi/sip/masterprovinsisatset/');
+                setProvinsi(provinsi.data);
+                console.log(provinsi.data)
+
+                
+
+                // const kelurahan = await axios.get('http://119.2.50.170/sendpusk/api/migrasi/sip/masterkelurahansatset');
+                // seteKelurahan(kelurahan.data);
+                // console.log(kelurahan.data)
+
+            } catch (error) {
+                console.error('Error fetching data:', error.message);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    
 
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(data);
-        post(route("register.store"));
+        post(route("register.store"));  
     };
 
     return (
@@ -44,7 +121,7 @@ export default function Register({ }) {
             <section className="w-1/2 flex flex-col justify-start px-2 py-2 gap-4">
                 <div className="w-min">
                     <a href={prevPage} className="flex flex-row gap-4">
-                        <i class="fa-solid fa-arrow-left text-black text-4xl"></i>
+                        <i className="fa-solid fa-arrow-left text-black text-4xl"></i>
                         <p className="text-4xl font-bold">Kembali</p>
                     </a>
                 </div>
@@ -83,7 +160,7 @@ export default function Register({ }) {
                                 onChange={changeData}
                             />
                             <InputError
-                                className="col-span-6"
+                                    className="col-span-6"
                                 message={errors.nik ? errors.nik : errors.match}
                             />
                             <label
@@ -173,20 +250,87 @@ export default function Register({ }) {
                             </div>
                             <div className="col-span-3 flex flex-col gap-2">
                                 <label
+                                    htmlFor="provinsi"
+                                    className="w-full text-xl font-bold"
+                                >
+                                    Provinsi
+                                </label>
+                                <select
+                                    className="w-full border-2 border-green-400 rounded-xl text-xl bg-gray-200"
+                                    name="provinsi"
+                                    id="provinsi"
+                                    onChange={(e) => {
+                                        changeData(e, e.target.value);
+                                        setProvinsiPilihan(e.target.value);
+                                    }}
+                                >
+                                    <option value="">-- Pilih Provinsi --</option>
+                                    {provinsi?.map((docs) => (
+                                        <option value={docs.kode_provinsi} key={docs.kode_provinsi}>{docs.nama}</option>
+                                    ))}
+                                </select>
+                                <InputError
+                                    className="w-full"
+                                    message={errors.kabkota}
+                                />
+                            </div>
+                            <div className="col-span-3 flex flex-col gap-2">
+                                <label
+                                    htmlFor="kabkota"
+                                    className="w-full text-xl font-bold"
+                                >
+                                    Kab/Kota
+                                </label>
+                                <select
+                                    className="w-full border-2 border-green-400 rounded-xl text-xl bg-gray-200"
+                                    name="kabkota"
+                                    id="kabkota"
+                                    value={data.kabkota}
+                                    onChange={(e) => {
+                                        changeData(e, e.target.value);
+                                        setData((prevData) => ({
+                                            ...prevData,
+                                            kabkota: e.target.value,
+                                        }));
+                                    }}
+                                    disabled={!kota || kota.length === 0}
+                                >
+                                    <option value="">-- Pilih Kota --</option>
+                                    {kota?.map((docs) => (
+                                        <option value={docs.kode_kota_kab} key={docs.kode_kota_kab}>{docs.nama}</option>
+                                    ))}
+                                </select>
+                                <InputError
+                                    className="w-full"
+                                    message={errors.kabkota}
+                                />
+                            </div>
+                            <div className="col-span-3 flex flex-col gap-2">
+                                <label
                                     htmlFor="kecamatan"
                                     className="w-full text-xl font-bold"
                                 >
                                     Kecamatan
                                 </label>
-                                <input
+                                <select
                                     className="w-full border-2 border-green-400 rounded-xl text-xl bg-gray-200"
-                                    type="text"
                                     name="kecamatan"
                                     id="kecamatan"
-                                    placeholder="Contoh: Kendal"
                                     value={data.kecamatan}
-                                    onChange={changeData}
-                                />
+                                    onChange={(e) => {
+                                        changeData(e, e.target.value);
+                                        setData((prevData) => ({
+                                            ...prevData,
+                                            kecamatan: e.target.value,
+                                        }));
+                                    }}
+                                    disabled={!kota || kota.length === 0}
+                                >
+                                    <option value="">-- Pilih Kecamatan --</option>
+                                    {kecamatan?.map((docs) => (
+                                        <option value={docs.kode_kecamatan} key={docs.kode_kecamatan}>{docs.nama}</option>
+                                    ))}
+                                </select>
                                 <InputError
                                     className="w-full"
                                     message={errors.kecamatan}
@@ -199,41 +343,31 @@ export default function Register({ }) {
                                 >
                                     Kelurahan/Desa
                                 </label>
-                                <input
+                                <select
                                     className="w-full border-2 border-green-400 rounded-xl text-xl bg-gray-200"
-                                    type="text"
                                     name="kelurahan"
                                     id="kelurahan"
-                                    placeholder="Contoh: Tembalang"
                                     value={data.kelurahan}
-                                    onChange={changeData}
-                                />
+                                    onChange={(e) => {
+                                        changeData(e, e.target.value);
+                                        setData((prevData) => ({
+                                            ...prevData,
+                                            kelurahan: e.target.value,
+                                        }));
+                                    }}
+                                    disabled={!kecamatan || kecamatan.length === 0}
+                                >
+                                    <option value="">-- Pilih kelurahan --</option>
+                                    {kelurahan?.map((docs) => (
+                                        <option value={docs.kode_kelurahan} key={docs.kode_kelurahan}>{docs.nama}</option>
+                                    ))}
+                                </select>
                                 <InputError
                                     className="w-full"
                                     message={errors.kelurahan}
                                 />
                             </div>
-                            <div className="col-span-3 flex flex-col gap-2">
-                                <label
-                                    htmlFor="kabkota"
-                                    className="w-full text-xl font-bold"
-                                >
-                                    Kab/Kota
-                                </label>
-                                <input
-                                    className="w-full border-2 border-green-400 rounded-xl text-xl bg-gray-200"
-                                    type="text"
-                                    name="kabkota"
-                                    id="kabkota"
-                                    placeholder="Contoh: Semarang Tengah"
-                                    value={data.kabkota}
-                                    onChange={changeData}
-                                />
-                                <InputError
-                                    className="w-full"
-                                    message={errors.kabkota}
-                                />
-                            </div>
+                            
                             <div className="col-span-3 flex flex-col gap-2">
                                 <label
                                     htmlFor="no_hp"

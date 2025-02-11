@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\ConfirmJsonContentType;
 use App\Http\Controllers\Device\DeviceDataController;
 use App\Http\Controllers\Device\TensionDataController;
+use App\Http\Controllers\V2\Api\PatientCollaborationController;
 use App\Http\Controllers\V2\Measure\PatientGlucoseController;
 use App\Http\Controllers\V2\Measure\PatientPrintController;
 use App\Http\Controllers\V2\Measure\PatientTensionController;
@@ -21,4 +22,8 @@ Route::middleware([ConfirmJsonContentType::class])->group(function () {
         Route::get('print/pdf/{nik}', [PatientPrintController::class, 'printPDF'])->name('patient.print.pdf');
     });
 });
+
+Route::get('patient/by/{nik}', [PatientCollaborationController::class, 'getPatientByNik'])->name('patient.by.nik');
+
+Route::get('patient/all', [PatientCollaborationController::class, 'getPatientAll'])->name('patient.all');
 

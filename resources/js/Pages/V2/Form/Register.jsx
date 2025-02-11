@@ -5,12 +5,12 @@ import { useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function Register({ }) {
+export default function Register({ kabkota, kecamatan, kelurahan }) {
 
     const [ provinsi, setProvinsi ]                 = useState()
     const [ kota, setKota ]                         = useState()
-    const [ kecamatan, setKecamatan ]               = useState()
-    const [ kelurahan, setKelurahan ]               = useState()
+    const [ kec, setKec ]               = useState()
+    const [ kel, setKel ]               = useState()
 
     const [ provinsiPilihan, setProvinsiPilihan ]   = useState(0)
     const [ kotaPilihan, setKotaPilihan ]           = useState()
@@ -38,7 +38,7 @@ export default function Register({ }) {
             [e.target.name]: e.target.value
         }))
 
-        kota ? kecamatan ? kelurahan ? alert('done') : getKelurahan(key) : getKecamatan(key) : getKota(key)
+        kota ? kec ? kel ? console.log('done') : getKelurahan(key) : getKecamatan(key) : getKota(key)
         
     }
 
@@ -46,36 +46,39 @@ export default function Register({ }) {
         const provinsi = await axios.get('http://119.2.50.170/sendpusk/api/migrasi/sip/masterkotakabsatset/');
         console.log(provinsi.data)
         const kotaRaw = []
-        provinsi.data.forEach(element => {
+        kabkota.forEach(element => {
             if(element.kode_parent == chosen){
                 kotaRaw.push(element)
             }
         })
         setKota(kotaRaw)
+        console.log(kotaRaw)
     }
 
     const getKecamatan = async (chosen) => {   
         const provinsi = await axios.get('http://119.2.50.170/sendpusk/api/migrasi/sip/masterkecamatansatset/');
         console.log(provinsi.data)
         const kotaRaw = []
-        provinsi.data.forEach(element => {
+        kecamatan.forEach(element => {
             if(element.kode_parent == chosen){
                 kotaRaw.push(element)
             }
         })
-        setKecamatan(kotaRaw)
+        setKec(kotaRaw)
+        console.log(kotaRaw)
     }
 
     const getKelurahan = async (chosen) => {   
         const provinsi = await axios.get('http://119.2.50.170/sendpusk/api/migrasi/sip/masterkelurahansatset/');
         console.log(provinsi.data)
         const kotaRaw = []
-        provinsi.data.forEach(element => {
+        kelurahan.forEach(element => {
             if(element.kode_parent == chosen){
                 kotaRaw.push(element)
             }
         })
-        setKelurahan(kotaRaw)
+        setKel(kotaRaw)
+        console.log(kotaRaw)
     }
 
 
@@ -293,7 +296,7 @@ export default function Register({ }) {
                                             kabkota: e.target.value,
                                         }));
                                     }}
-                                    disabled={!kota || kota.length === 0}
+                                    // disabled={!kota || kota.length === 0}
                                 >
                                     <option value="">-- Pilih Kota --</option>
                                     {kota?.map((docs) => (
@@ -327,7 +330,7 @@ export default function Register({ }) {
                                     disabled={!kota || kota.length === 0}
                                 >
                                     <option value="">-- Pilih Kecamatan --</option>
-                                    {kecamatan?.map((docs) => (
+                                    {kec?.map((docs) => (
                                         <option value={docs.kode_kecamatan} key={docs.kode_kecamatan}>{docs.nama}</option>
                                     ))}
                                 </select>
@@ -358,7 +361,7 @@ export default function Register({ }) {
                                     disabled={!kecamatan || kecamatan.length === 0}
                                 >
                                     <option value="">-- Pilih kelurahan --</option>
-                                    {kelurahan?.map((docs) => (
+                                    {kel?.map((docs) => (
                                         <option value={docs.kode_kelurahan} key={docs.kode_kelurahan}>{docs.nama}</option>
                                     ))}
                                 </select>

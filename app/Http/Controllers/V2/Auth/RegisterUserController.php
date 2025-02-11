@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class RegisterUserController extends Controller
 {
@@ -15,9 +16,31 @@ class RegisterUserController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        return Inertia::render('V2/Form/Register');
-    }
+{
+	$kabkota = $this->getKota();
+	$kecamatan = $this->getKecamatan();
+	$kelurahan = $this->getKelurahan();
+    
+	return Inertia::render('V2/Form/Register', compact('kabkota', 'kecamatan', 'kelurahan'));
+}
+
+public function getKota()
+{
+	$response = Http::get('http://119.2.50.170/sendpusk/api/migrasi/sip/masterkotakabsatset/');
+	return $response->json();
+}
+
+public function getKecamatan()
+{
+	$response = Http::get('http://119.2.50.170/sendpusk/api/migrasi/sip/masterkecamatansatset/');
+	return $response->json();
+}
+
+public function getKelurahan()
+{
+	$response = Http::get('http://119.2.50.170/sendpusk/api/migrasi/sip/masterkelurahansatset/');
+	return $response->json();
+}
 
     /**
      * Store a newly created resource in storage.

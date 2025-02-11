@@ -31,15 +31,24 @@ export default function Register({ kabkota, kecamatan, kelurahan }) {
 
     const prevPage = "/v2";
 
-    const changeData = (e, key) => {
+    const changeData = (e, region, key) => {
         console.log(key)
         setData(prevState => ({
             ...prevState,
             [e.target.name]: e.target.value
         }))
 
-        kota ? kec ? kel ? console.log('done') : getKelurahan(key) : getKecamatan(key) : getKota(key)
-        
+        // kota ? kec ? kel ? console.log('done') : getKelurahan(key) : getKecamatan(key) : getKota(key)
+        // region == "kota" ? getKota(key) : region == "kecamatan" ? getKecamatan(key) :  region == "kelurahan" ? getKelurahan(key);
+        if(region == "kota") {
+            getKota(key)
+        }
+        if(region == "kecamatan") {
+            getKecamatan(key)
+        }
+        if(region == "kelurahan") {
+            getKelurahan(key)
+        }
     }
 
     const getKota = async (chosen) => {   
@@ -263,7 +272,7 @@ export default function Register({ kabkota, kecamatan, kelurahan }) {
                                     name="provinsi"
                                     id="provinsi"
                                     onChange={(e) => {
-                                        changeData(e, e.target.value);
+                                        changeData(e, "kota", e.target.value);
                                         setProvinsiPilihan(e.target.value);
                                     }}
                                 >
@@ -290,7 +299,7 @@ export default function Register({ kabkota, kecamatan, kelurahan }) {
                                     id="kabkota"
                                     value={data.kabkota}
                                     onChange={(e) => {
-                                        changeData(e, e.target.value);
+                                        changeData(e, "kecamatan", e.target.value);
                                         setData((prevData) => ({
                                             ...prevData,
                                             kabkota: e.target.value,
@@ -321,7 +330,7 @@ export default function Register({ kabkota, kecamatan, kelurahan }) {
                                     id="kecamatan"
                                     value={data.kecamatan}
                                     onChange={(e) => {
-                                        changeData(e, e.target.value);
+                                        changeData(e, "kelurahan", e.target.value);
                                         setData((prevData) => ({
                                             ...prevData,
                                             kecamatan: e.target.value,
@@ -346,7 +355,7 @@ export default function Register({ kabkota, kecamatan, kelurahan }) {
                                 >
                                     Kelurahan/Desa
                                 </label>
-                                <select
+                                {/* <select
                                     className="w-full border-2 border-green-400 rounded-xl text-xl bg-gray-200"
                                     name="kelurahan"
                                     id="kelurahan"
@@ -364,7 +373,25 @@ export default function Register({ kabkota, kecamatan, kelurahan }) {
                                     {kel?.map((docs) => (
                                         <option value={docs.kode_kelurahan} key={docs.kode_kelurahan}>{docs.nama}</option>
                                     ))}
-                                </select>
+                                </select> */}
+                                <input type="text"
+                                    className="w-full border-2 border-green-400 rounded-xl text-xl bg-gray-200"
+                                    name="kelurahan"
+                                    id="kelurahan"
+                                    value={data.kelurahan}
+                                    onChange={(e) => {
+                                        changeData(e, "kelurahan", e.target.value);
+                                        setData((prevData) => ({
+                                            ...prevData,
+                                            kelurahan: e.target.value,
+                                        }));
+                                    }}
+                                    disabled={!kecamatan || kecamatan.length === 0}
+                                />
+                                    {/* <option value="">-- Pilih kelurahan --</option>
+                                    {kel?.map((docs) => (
+                                        <option value={docs.kode_kelurahan} key={docs.kode_kelurahan}>{docs.nama}</option>
+                                    ))} */}
                                 <InputError
                                     className="w-full"
                                     message={errors.kelurahan}

@@ -12,7 +12,7 @@ export default function Register({ kabkota, kecamatan, kelurahan }) {
     const [ kec, setKec ]                           = useState()
     const [ kel, setKel ]                           = useState()
 
-    const [ loading, setLoading ]   = useState(false)        
+    const [ loading, setLoading ]                   = useState(false)        
 
     const [ provinsiPilihan, setProvinsiPilihan ]   = useState(0)
     const [ kotaPilihan, setKotaPilihan ]           = useState()
@@ -34,17 +34,13 @@ export default function Register({ kabkota, kecamatan, kelurahan }) {
     const prevPage = "/v2";
 
     const changeData = (e, region, key) => {
+
         console.log(key)
         setData(prevState => ({
             ...prevState,
             [e.target.name]: e.target.value
         }))
-
-        // kota ? kec ? kel ? console.log('done') : getKelurahan(key) : getKecamatan(key) : getKota(key)
-        // region == "kota" ? getKota(key) : region == "kecamatan" ? getKecamatan(key) :  region == "kelurahan" ? getKelurahan(key);
-        if(region == "kota") {
-            getKota(key)
-        }
+        
         if(region == "kecamatan") {
             getKecamatan(key)
         }
@@ -61,7 +57,6 @@ export default function Register({ kabkota, kecamatan, kelurahan }) {
             }
         })
         setKota(kotaRaw)
-        console.log(kotaRaw)
     }
 
     const getKecamatan = async (chosen) => {   
@@ -72,7 +67,6 @@ export default function Register({ kabkota, kecamatan, kelurahan }) {
             }
         })
         setKec(kotaRaw)
-        console.log(kotaRaw)
     }
 
     const getKelurahan = async (chosen) => {   
@@ -83,7 +77,6 @@ export default function Register({ kabkota, kecamatan, kelurahan }) {
             }
         })
         setKel(kotaRaw)
-        console.log(kotaRaw)
     }
 
 
@@ -272,8 +265,7 @@ export default function Register({ kabkota, kecamatan, kelurahan }) {
                                     name="provinsi"
                                     id="provinsi"
                                     onChange={(e) => {
-                                        changeData(e, "kota", e.target.value);
-                                        setProvinsiPilihan(e.target.value);
+                                        getKota(e.target.value), setProvinsiPilihan(e.target.value);
                                     }}
                                 >
                                     <option value="">-- Pilih Provinsi --</option>

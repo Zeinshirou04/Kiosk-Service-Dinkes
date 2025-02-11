@@ -23,7 +23,6 @@ Route::middleware([ConfirmJsonContentType::class])->group(function () {
     });
 });
 
-Route::get('patient/akmAPIkey/by/{nik}', [PatientCollaborationController::class, 'getPatientByNik'])->name('patient.by.nik');
+Route::get('patient/by/{nik}', [PatientCollaborationController::class, 'getPatientByNik'])->name('patient.by.nik');
 
-Route::get('patient/akmAPIkey/all', [PatientCollaborationController::class, 'getPatientAll'])->name('patient.all');
-
+Route::get('patient/all', [PatientCollaborationController::class, 'getPatientAll'])->name('patient.all');

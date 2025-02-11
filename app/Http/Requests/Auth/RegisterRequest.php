@@ -26,9 +26,9 @@ class RegisterRequest extends FormRequest
             'nama_pasien' => ['required', 'string'],
             'jenis_kelamin' => ['required', 'string', 'size:1'],
             'tgl_lahir' => ['required', 'date'],
-            'kecamatan' => ['required', 'string'],
+            'kecamatan' => ['required', 'numeric'],
             'kelurahan' => ['required', 'string'],
-            'kabkota' => ['required', 'string'],
+            'kabkota' => ['required', 'numeric'],
             'alamat' => ['required', 'string'],
             'no_hp' => ['required', 'numeric', 'digits_between:11,13'],
         ];

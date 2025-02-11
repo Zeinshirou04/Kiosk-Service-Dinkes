@@ -9,8 +9,10 @@ export default function Register({ kabkota, kecamatan, kelurahan }) {
 
     const [ provinsi, setProvinsi ]                 = useState()
     const [ kota, setKota ]                         = useState()
-    const [ kec, setKec ]               = useState()
-    const [ kel, setKel ]               = useState()
+    const [ kec, setKec ]                           = useState()
+    const [ kel, setKel ]                           = useState()
+
+    const [ loading, setLoading ]   = useState(false)        
 
     const [ provinsiPilihan, setProvinsiPilihan ]   = useState(0)
     const [ kotaPilihan, setKotaPilihan ]           = useState()
@@ -51,9 +53,7 @@ export default function Register({ kabkota, kecamatan, kelurahan }) {
         }
     }
 
-    const getKota = async (chosen) => {   
-        const provinsi = await axios.get('http://119.2.50.170/sendpusk/api/migrasi/sip/masterkotakabsatset/');
-        console.log(provinsi.data)
+    const getKota = async (chosen) => {     
         const kotaRaw = []
         kabkota.forEach(element => {
             if(element.kode_parent == chosen){
@@ -65,8 +65,6 @@ export default function Register({ kabkota, kecamatan, kelurahan }) {
     }
 
     const getKecamatan = async (chosen) => {   
-        const provinsi = await axios.get('http://119.2.50.170/sendpusk/api/migrasi/sip/masterkecamatansatset/');
-        console.log(provinsi.data)
         const kotaRaw = []
         kecamatan.forEach(element => {
             if(element.kode_parent == chosen){
@@ -78,8 +76,6 @@ export default function Register({ kabkota, kecamatan, kelurahan }) {
     }
 
     const getKelurahan = async (chosen) => {   
-        const provinsi = await axios.get('http://119.2.50.170/sendpusk/api/migrasi/sip/masterkelurahansatset/');
-        console.log(provinsi.data)
         const kotaRaw = []
         kelurahan.forEach(element => {
             if(element.kode_parent == chosen){
@@ -120,9 +116,13 @@ export default function Register({ kabkota, kecamatan, kelurahan }) {
     
 
     const handleSubmit = (e) => {
+        // setLoading(true);
         e.preventDefault();
         console.log(data);
         post(route("register.store"));  
+        // setTimeout(() => {
+        //     window.location.href = "/v2";
+        // }, 1500);
     };
 
     return (
@@ -426,6 +426,11 @@ export default function Register({ kabkota, kecamatan, kelurahan }) {
                         </form>
                     </section>
                 </div>
+                {loading ? (
+                    <div className='fixed flex justify-center items-center inset-0 z-50 bg-black/50 min-h-screen w-full'>
+                        <div className="w-40 rounded-full animate-spin aspect-square border-4 border-white"></div>
+                    </div>
+                ) : (null)}
             </section>
         </Guest>
     );

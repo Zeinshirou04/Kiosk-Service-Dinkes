@@ -3,7 +3,7 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\v2\HomeController;
+use App\Http\Controllers\V2\HomeController;
 use App\Http\Controllers\Home\MenuController;
 use App\Http\Controllers\V2\Auth\LoginSessionController;
 use App\Http\Controllers\V2\Auth\RegisterUserController;

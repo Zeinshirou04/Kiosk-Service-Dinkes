@@ -8,39 +8,43 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
 class RegisterUserController extends Controller
 {
+    private $cityEndpoint;
+    public const CACHE_TIMEOUT = 600;
+
+    public function __construct()
+    {
+        $this->cityEndpoint = env('CITY_ENDPOINT');
+    }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
-{
-	$kabkota = $this->getKota();
-	$kecamatan = $this->getKecamatan();
-	$kelurahan = $this->getKelurahan();
-    
-	return Inertia::render('V2/Form/Register', compact('kabkota', 'kecamatan', 'kelurahan'));
-}
+    {
+        $kabkota = $this->getCitiesFromApi('kabkota', '/migrasi/sip/masterkotakabsatset/');
+        $kecamatan = $this->getCitiesFromApi('kecamatan', '/migrasi/sip/masterkecamatansatset/');
+        $kelurahan = $this->getCitiesFromApi('kelurahan', '/migrasi/sip/masterkelurahansatset/');
+        $provinsi = $this->getCitiesFromApi('provinsi', '/migrasi/sip/masterprovinsisatset/');
 
-public function getKota()
-{
-	$response = Http::get('http://119.2.50.170/sendpusk/api/migrasi/sip/masterkotakabsatset/');
-	return $response->json();
-}
+        return Inertia::render('V2/Form/Register', compact('kabkota', 'kecamatan', 'kelurahan', 'provinsi'));
+    }
 
-public function getKecamatan()
-{
-	$response = Http::get('http://119.2.50.170/sendpusk/api/migrasi/sip/masterkecamatansatset/');
-	return $response->json();
-}
-
-public function getKelurahan()
-{
-	$response = Http::get('http://119.2.50.170/sendpusk/api/migrasi/sip/masterkelurahansatset/');
-	return $response->json();
-}
+    public function getCitiesFromApi(String $cacheName, String $url)
+    {
+        return Cache::remember($cacheName, self::CACHE_TIMEOUT, function () use ($url) {
+            try {
+                $response = Http::timeout(60)->get($this->cityEndpoint . $url);
+                return $response->successful() ? $response->json() : [];
+            } catch (\Throwable $th) {
+                return [];
+            }
+        });
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -53,7 +57,7 @@ public function getKelurahan()
             if ($this->isAuthenticated($request)) return redirect()->to(route('v2.home.index', ['state' => 'weight']));
         } catch (QueryException $e) {
             $errorCode = $e->errorInfo[1];
-            if($errorCode == 1062) {
+            if ($errorCode == 1062) {
                 return redirect()->to(route('register.create'))->withErrors([
                     'match' => 'NIK sudah terdaftar, silahkan gunakan NIK lain.'
                 ]);
@@ -61,7 +65,7 @@ public function getKelurahan()
         } catch (\Throwable $th) {
             // throw $th;
             return redirect()->to(route('register.create'))->withErrors([
-                'match' => $th->getMessage()
+                'excpetion' => $th->getMessage()
             ]);
         }
     }

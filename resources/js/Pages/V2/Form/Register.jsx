@@ -238,6 +238,7 @@ export default function Register({ kabkota, kecamatan, kelurahan, provinsi }) {
                                     {provinsi.map((docs) => (
                                         docs.nama == 'Jawa Tengah' ? <option value={docs.kode_provinsi} key={docs.kode_provinsi}>{docs.nama}</option> : null
                                     ))}
+                                    <option value={33}>default</option>
                                 </select>
                                 <InputError
                                     className="w-full"
@@ -265,6 +266,7 @@ export default function Register({ kabkota, kecamatan, kelurahan, provinsi }) {
                                     {kabkota.map((docs) => (
                                         docs.kode_parent == provinsiPilihan ? <option value={docs.kode_kota_kab} key={docs.kode_kota_kab}>{docs.nama}</option> : null
                                     ))}
+                                    <option value={3374}>default</option>
                                 </select>
                                 <InputError
                                     className="w-full"
@@ -292,6 +294,7 @@ export default function Register({ kabkota, kecamatan, kelurahan, provinsi }) {
                                     {kecamatan.map((docs) => (
                                         docs.kode_parent == data.kabkota ? <option value={docs.kode_kecamatan} key={docs.kode_kecamatan}>{docs.nama}</option> : null
                                     ))}
+                                    <option value={337401}>default</option>
                                 </select>
                                 <InputError
                                     className="w-full"
@@ -323,6 +326,7 @@ export default function Register({ kabkota, kecamatan, kelurahan, provinsi }) {
                                     {kelurahan.map((docs) => (
                                         docs.kode_parent == data.kecamatan ? <option value={docs.kode_kelurahan} key={docs.kode_kelurahan}>{docs.nama}</option> : null
                                     ))}
+                                    <option value={33740127}>default</option>
                                 </select>
                                 {/* <input type="text"
                                     className="w-full border-2 border-green-400 rounded-xl text-xl bg-gray-200"

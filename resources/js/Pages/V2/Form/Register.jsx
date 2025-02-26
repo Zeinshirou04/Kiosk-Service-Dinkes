@@ -326,7 +326,7 @@ export default function Register({ kabkota, kecamatan, kelurahan, provinsi }) {
                                     {kelurahan.map((docs) => (
                                         docs.kode_parent == data.kecamatan ? <option value={docs.kode_kelurahan} key={docs.kode_kelurahan}>{docs.nama}</option> : null
                                     ))}
-                                    <option value={33740127}>default</option>
+                                    <option key={1010101010101} value={33740127}>default</option>
                                 </select>
                                 {/* <input type="text"
                                     className="w-full border-2 border-green-400 rounded-xl text-xl bg-gray-200"

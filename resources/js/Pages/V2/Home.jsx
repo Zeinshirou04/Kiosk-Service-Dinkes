@@ -13,6 +13,8 @@ import Guide from "./Popup/GuidePopup";
 import WeightTutorial from "./Popup/Tutorial/WeightTutorial";
 import GlucoseTutorial from "./Popup/Tutorial/GlucoseTutorial";
 import BloodTutorial from "./Popup/Tutorial/BloodTutorial";
+import AboutAkmModal from "./Popup/Form/Help/AboutAkmModal";
+import HowToUseModal from "./Popup/Form/Help/HowToUseModal";
 import { Inertia } from "@inertiajs/inertia";
 
 export default function Home({
@@ -35,7 +37,12 @@ export default function Home({
         WeightTutorialActive: false,
         GlucoseTutorialActive: false,
         BloodTutorialActive: false,
+
+        AboutAkmActive: false,
+        HowToUseActive: false,
     });
+
+    console.log(popups.AboutAkmActive);
 
     const fetchWeather = () => {
         const success = async (position) => {
@@ -135,6 +142,8 @@ export default function Home({
                 setActive={setPopups}
                 nik={nik}
             />
+            <AboutAkmModal isActive={popups.AboutAkmActive} setActive={setPopups} />
+            <HowToUseModal isActive={popups.HowToUseActive} setActive={setPopups} />
             <div className="w-full flex flex-col justify-center gap-8">
                 <div className="w-full">
                     <h4 className="text-center font-header font-normal text-3xl">
@@ -258,13 +267,11 @@ export default function Home({
                                 "from-orange-500/80 via-orange-500 to-orange-500/70 hover:from-orange-600/80 hover:via-orange-600 hover:to-orange-600/70 focus:from-orange-700/80 focus:via-orange-700 focus:to-orange-700/70 active:from-orange-700/80 active:via-orange-700 active:to-orange-700/70"
                             }
                             onClick={() => {
-                                setPopups((prevState) => ({
-                                    ...prevState,
-                                    MeasureActive: !prevState.MeasureActive,
-                                }));
+                                setPopups((prev) => ({ ...prev, AboutAkmActive: true }));
                             }}
-                            disabled={true}
+                            disabled={false}
                         />
+
                         <Menu
                             title={"Cara Penggunaan"}
                             icon={"fa-circle-info"}
@@ -272,13 +279,11 @@ export default function Home({
                                 "from-orange-500/80 via-orange-500 to-orange-500/70 hover:from-orange-600/80 hover:via-orange-600 hover:to-orange-600/70 focus:from-orange-700/80 focus:via-orange-700 focus:to-orange-700/70 active:from-orange-700/80 active:via-orange-700 active:to-orange-700/70"
                             }
                             onClick={() => {
-                                setPopups((prevState) => ({
-                                    ...prevState,
-                                    MeasureActive: !prevState.MeasureActive,
-                                }));
+                                setPopups((prev) => ({ ...prev, HowToUseActive: true }));
                             }}
-                            disabled={true}
+                            disabled={false}
                         />
+
                     </div>
                 </div>
             </div>

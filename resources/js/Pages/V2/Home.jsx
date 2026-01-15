@@ -154,9 +154,6 @@ export default function Home({
                     </h1>
                 </div>
                 <div className="w-full">
-                    <p className="text-center text-2xl text-wrap mx-auto mb-6">
-                        Cuaca di Mijen saat ini adalah <b>Cerah Berawan</b>
-                    </p>
                     {/* <div className="flex flex-row w-full justify-center text-4xl gap-4">
                         <div className="flex flex-col items-end gap-3">
                             <div className="w-auto">

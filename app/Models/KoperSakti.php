@@ -10,6 +10,8 @@ class KoperSakti extends Model
 
     protected $fillable = [
         'nama_pasien',
+        'id_koper',
+        'puskesmas',
         'nik',
         'jenis_kelamin',
         'umur',

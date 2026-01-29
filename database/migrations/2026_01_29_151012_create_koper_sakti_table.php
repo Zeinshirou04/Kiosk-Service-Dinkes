@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('koper_sakti', function (Blueprint $table) {
             $table->id();
             $table->string('nama_pasien');
+            $table->string('id_koper');
+            $table->string('puskesmas');
             $table->string('nik');
             $table->string('jenis_kelamin');
             $table->string('umur');

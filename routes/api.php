@@ -1,19 +1,16 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use App\Http\Middleware\ConfirmJsonContentType;
 use App\Http\Controllers\Device\DeviceDataController;
 use App\Http\Controllers\Device\TensionDataController;
+use App\Http\Controllers\KoperSakti\KoperSaktiController;
 use App\Http\Controllers\V2\Api\PatientCollaborationController;
-use App\Http\Controllers\V2\Measure\PatientGlucoseController;
 use App\Http\Controllers\V2\Measure\PatientPrintController;
-use App\Http\Controllers\V2\Measure\PatientTensionController;
-use App\Http\Controllers\V2\Measure\PatientWeightController;
+use App\Http\Middleware\ConfirmJsonContentType;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware([ConfirmJsonContentType::class])->group(function () {
     Route::apiResource('device', DeviceDataController::class)->except([
-        'index', 'create', 'edit', 'update', 'destroy'
+        'index', 'create', 'edit', 'update', 'destroy',
     ]);
     Route::apiResource('tension', TensionDataController::class)->except([
         'index', 'create', 'edit', 'update', 'destroy',
@@ -22,6 +19,8 @@ Route::middleware([ConfirmJsonContentType::class])->group(function () {
         Route::get('print/pdf/{nik}', [PatientPrintController::class, 'printPDF'])->name('patient.print.pdf');
     });
 });
+
+Route::post('koper-sakti', [KoperSaktiController::class, 'store'])->name('koper-sakti.store');
 
 Route::get('patient/by/{nik}', [PatientCollaborationController::class, 'getPatientByNik'])->name('patient.by.nik');
 

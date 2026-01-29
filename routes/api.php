@@ -20,7 +20,9 @@ Route::middleware([ConfirmJsonContentType::class])->group(function () {
     });
 });
 
-Route::post('koper-sakti', [KoperSaktiController::class, 'store'])->name('koper-sakti.store');
+Route::middleware(['throttle:60,1', 'api.key'])->group(function () {
+    Route::post('koper-sakti', [KoperSaktiController::class, 'store']);
+});
 
 Route::get('patient/by/{nik}', [PatientCollaborationController::class, 'getPatientByNik'])->name('patient.by.nik');
 

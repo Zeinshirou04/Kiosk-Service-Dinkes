@@ -17,21 +17,21 @@ class KoperSaktiController extends Controller
             ->format('Y-m-d H:i:s');
 
         KoperSakti::create([
-            'nama_pasien' => $data['nama_pasien'],
-            'nik' => $data['nik'],
-            'jenis_kelamin' => $data['jenis_kelamin'],
-            'umur' => $data['umur'],
-            'kecamatan' => $data['kecamatan'],
-            'kelurahan' => $data['kelurahan'],
-            'alamat' => $data['alamat'],
+            'nama_pasien' => strip_tags($data['nama_pasien']),
+            'nik' => strip_tags($data['nik']),
+            'jenis_kelamin' => strip_tags($data['jenis_kelamin']),
+            'umur' => (int) $data['umur'],
+            'kecamatan' => strip_tags($data['kecamatan']),
+            'kelurahan' => strip_tags($data['kelurahan']),
+            'alamat' => strip_tags($data['alamat']),
             'tanggal_pengukuran' => $tanggal,
-            'kolesterol' => $data['kolesterol'],
-            'asam_urat' => $data['asam_urat'],
-            'gula_darah' => $data['gula_darah'],
-            'tensi_sys' => $data['tensi_sys'],
-            'tensi_dia' => $data['tensi_dia'],
-            'tinggi_badan' => $data['tinggi_badan'],
-            'berat_badan' => $data['berat_badan'],
+            'kolesterol' => (float) $data['kolesterol'],
+            'asam_urat' => (float) $data['asam_urat'],
+            'gula_darah' => (float) $data['gula_darah'],
+            'tensi_sys' => (int) $data['tensi_sys'],
+            'tensi_dia' => (int) $data['tensi_dia'],
+            'tinggi_badan' => (float) $data['tinggi_badan'],
+            'berat_badan' => (float) $data['berat_badan'],
         ]);
 
         return response()->json([

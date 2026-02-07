@@ -2,67 +2,94 @@
 
 namespace App\Http\Controllers\V2\Measure;
 
-use Carbon\Carbon;
-use Dompdf\Dompdf;
-use Illuminate\Support\Str;
-use App\Models\Patient\Measure;
-use App\Models\Patient\Patients;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log; // Tambahkan Log
 use App\Models\Patient\MeasureGlucose;
-use App\Models\Patient\MeasureTension;
-use Illuminate\Support\Facades\Storage;
+use App\Models\Patient\MeasureWeight;
 
 class PatientPrintController extends Controller
 {
-    public function printPDF(string $nik) {
-        $patient = Patients::where('nik', $nik)->select('nama_pasien', 'jenis_kelamin', 'tgl_lahir', 'kecamatan', 'alamat')->latest()->first();
-        $glucose = MeasureGlucose::where('nik', $nik)->select('glucose')->latest()->first();
-        $tension = MeasureTension::where('nik', $nik)->select('b_atas', 'b_bawah', 'denyut')->latest()->first();
-        $weight = Measure::where('nik', $nik)->select('berat', 'tinggi')->latest()->first();
-        $date = Carbon::now();
-        $data = [
-            'glucose' => ['glukosa' => $glucose->glucose, 'keterangan' => $this->getCategoryGlucose($glucose->glucose)],
-            'weight' => [
-                'berat' => $weight->berat,
-                'tinggi' => $weight->tinggi,
-            ],
-            'tension' => [
-                'sistole' => $tension->b_atas,
-                'diastole' => $tension->b_bawah,
-                'keterangan' => $this->getCategoryTension($tension->b_atas, $tension->b_bawah),
-            ],
-            'date' => sprintf("Semarang, %d %s %d", $date->day, $date->monthName, $date->year),
-            'patient' => $patient
-        ];
+    public function getSummary()
+    {
+        try {
+            // 1. Cek Login
+            if (!Auth::check()) {
+                return response()->json(['message' => 'User session expired/not logged in'], 401);
+            }
 
-        $dompdf = new Dompdf();
+            $user = Auth::user();
 
-        $dompdf->loadHtml(view("raport.pdf", $data));
-        $dompdf->render();
-        $output = $dompdf->output();
-        $filename = "Laporan-" . $nik . ".pdf";
-        // dd($filename);
-        Storage::put('public/pdf/report/patient/' . $filename, $output);
-        return response()->json([
-            "status" => "Report Successfully Generated",
-            "url" => url("https://kiosk.robotlintang.id/pdf/report/patient/" . $filename)
-        ]);
+            // 2. Ambil Data (Gunakan try-catch per item agar jika satu tabel hilang, tidak mati semua)
+            $weightData = null;
+            try {
+                // Pastikan Model MeasureWeight BENAR-BENAR ADA
+                if (class_exists(MeasureWeight::class)) {
+                    $weightData = MeasureWeight::where('nik', $user->nik)->latest()->first();
+                }
+            } catch (\Throwable $t) {
+                Log::error("Error ambil berat: " . $t->getMessage());
+            }
 
-    }
+            $glucoseData = null;
+            try {
+                $glucoseData = MeasureGlucose::where('nik', $user->nik)->latest()->first();
+            } catch (\Throwable $t) {
+                Log::error("Error ambil gula: " . $t->getMessage());
+            }
 
-    public function getCategoryTension(int $sistole, int $diastole) {
-        if (($sistole == 0) & ($diastole == 0)) return "Tidak Terdefinisi";
-        if ($sistole < 120 && $diastole < 80) return "Normal";
-        if ($sistole < 139 && $diastole < 89) return "Pra Hipertensi";
-        if ($sistole < 159 && $diastole < 99) return "Hipertensi Tingkat 1";
-        if ($sistole >= 160 && $diastole >= 100) return "Hipertensi Tingkat 2";
-        if ($sistole > 140 && $diastole < 90) return "Hipertensi Sistolik Terisolasi";
-        return "Tidak Terdefinisi";
-    }
+            // 3. Hitung Logika (Safe Mode)
+            $bmi = '-';
+            $bmiKet = '-';
+            $tinggi = '-';
+            $berat = '-';
 
-    public function getCategoryGlucose(int $glucose) {
-        if ($glucose < 200) return "Normal";
-        if ($glucose >= 200) return "Diabetes";
-        return "Tidak Terdefinisi";
+            if ($weightData) {
+                $tinggi = $weightData->height ?? '-';
+                $berat = $weightData->weight ?? '-';
+                
+                if (is_numeric($tinggi) && is_numeric($berat) && $tinggi > 0) {
+                    $heightM = $tinggi / 100;
+                    $bmiVal = $berat / ($heightM * $heightM);
+                    $bmi = number_format($bmiVal, 1);
+                    
+                    if ($bmiVal < 18.5) $bmiKet = 'Kurus';
+                    elseif ($bmiVal < 25) $bmiKet = 'Normal';
+                    elseif ($bmiVal < 30) $bmiKet = 'Gemuk';
+                    else $bmiKet = 'Obesitas';
+                }
+            }
+
+            $gulaVal = '-';
+            $gulaKet = '-';
+            if ($glucoseData) {
+                $gulaVal = $glucoseData->glucose ?? '-';
+                if (is_numeric($gulaVal)) {
+                    if ($gulaVal < 70) $gulaKet = 'Rendah';
+                    elseif ($gulaVal <= 200) $gulaKet = 'Normal';
+                    else $gulaKet = 'Tinggi';
+                }
+            }
+
+            return response()->json([
+                'nama' => $user->nama_pasien ?? 'Pasien',
+                'tanggal' => now()->format('d-m-Y H:i'),
+                'tinggi' => $tinggi,
+                'berat' => $berat,
+                'bmi' => $bmi,
+                'bmi_ket' => $bmiKet,
+                'gula' => $gulaVal,
+                'gula_ket' => $gulaKet,
+                'tensi' => '-', 
+            ]);
+
+        } catch (\Throwable $mainError) {
+            // Tangkap Error Fatal Controller
+            Log::error("Print Controller Error: " . $mainError->getMessage());
+            return response()->json([
+                'message' => 'Server Error: ' . $mainError->getMessage()
+            ], 500);
+        }
     }
 }

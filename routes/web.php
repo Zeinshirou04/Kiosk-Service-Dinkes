@@ -15,6 +15,7 @@ use App\Http\Controllers\V2\Measure\PatientTensionController;
 use App\Http\Controllers\V2\Measure\PatientWeightController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\V2\Measure\PatientPrintController;
 
 Route::get('/', function () {
     return redirect()->route('v2.home.index');
@@ -55,6 +56,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/v2/print-summary', [PatientPrintController::class, 'getSummary'])->name('v2.print.summary');
 });
 
 Route::prefix('v2')->group(function () {
@@ -82,4 +84,4 @@ Route::prefix('v2')->group(function () {
     });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

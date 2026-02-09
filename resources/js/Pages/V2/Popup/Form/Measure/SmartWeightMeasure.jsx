@@ -31,7 +31,7 @@ export default function WeightMeasure({
             const response = await axios.get(
                 route("device.show", {
                     device: "eec58e5e-cd44-319f-a1be-46dd38c5d01c",
-                })
+                }),
             );
             const temp = response.data.data;
             let bmi = (temp.berat / Math.pow(temp.tinggi / 100, 2)).toFixed(1);
@@ -116,7 +116,7 @@ export default function WeightMeasure({
                                             onChange={(e) =>
                                                 setData(
                                                     "tinggi",
-                                                    e.target.value
+                                                    e.target.value,
                                                 )
                                             }
                                             className="text-4xl rounded-lg w-full border border-green-500"

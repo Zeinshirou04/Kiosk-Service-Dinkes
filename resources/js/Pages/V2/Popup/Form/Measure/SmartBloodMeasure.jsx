@@ -33,7 +33,7 @@ export default function BloodMeasure({
             const response = await axios.get(
                 route("tension.show", {
                     tension: "fe5110fa-4b69-3c21-acfa-4c5830af6b10",
-                })
+                }),
             );
             const temp = response.data.data;
             setData((data) => ({
@@ -116,7 +116,7 @@ export default function BloodMeasure({
                                             onChange={(e) =>
                                                 setData(
                                                     "b_atas",
-                                                    e.target.value
+                                                    e.target.value,
                                                 )
                                             }
                                             className="text-4xl rounded-lg w-full border border-green-500"
@@ -141,7 +141,7 @@ export default function BloodMeasure({
                                             onChange={(e) =>
                                                 setData(
                                                     "b_bawah",
-                                                    e.target.value
+                                                    e.target.value,
                                                 )
                                             }
                                             className="text-4xl rounded-lg w-full border border-green-500"

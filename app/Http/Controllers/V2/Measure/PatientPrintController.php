@@ -3,93 +3,119 @@
 namespace App\Http\Controllers\V2\Measure;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log; // Tambahkan Log
-use App\Models\Patient\MeasureGlucose;
-use App\Models\Patient\MeasureWeight;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB; // Gunakan DB Facade agar lebih fleksibel
 
 class PatientPrintController extends Controller
 {
     public function getSummary()
     {
         try {
-            // 1. Cek Login
+            // --- 1. CEK LOGIN (Sesuai Server) ---
+            // Kita gunakan data dari User yang sedang login
             if (!Auth::check()) {
                 return response()->json(['message' => 'User session expired/not logged in'], 401);
             }
 
             $user = Auth::user();
+            $nik = $user->nik;
+            
+            // Nama diambil dari data user server
+            $namaPasien = $user->nama_pasien ?? $user->name ?? 'Pasien'; 
 
-            // 2. Ambil Data (Gunakan try-catch per item agar jika satu tabel hilang, tidak mati semua)
-            $weightData = null;
-            try {
-                // Pastikan Model MeasureWeight BENAR-BENAR ADA
-                if (class_exists(MeasureWeight::class)) {
-                    $weightData = MeasureWeight::where('nik', $user->nik)->latest()->first();
-                }
-            } catch (\Throwable $t) {
-                Log::error("Error ambil berat: " . $t->getMessage());
+            // --- 2. AMBIL DATA DARI 3 TABEL (Sesuai Local) ---
+            // Menggunakan DB::table agar aman jika Model belum dibuat di server
+            
+            // A. Berat & Tinggi (Tabel: measure)
+            $weightData = DB::table('measure')
+                            ->where('nik', $nik)
+                            ->latest()
+                            ->first();
+            
+            // Fallback: Jika tabelnya bernama 'measure_weights' (bawaan server lama)
+            if (!$weightData) {
+                $weightData = DB::table('measure_weights')->where('nik', $nik)->latest()->first();
             }
 
-            $glucoseData = null;
-            try {
-                $glucoseData = MeasureGlucose::where('nik', $user->nik)->latest()->first();
-            } catch (\Throwable $t) {
-                Log::error("Error ambil gula: " . $t->getMessage());
-            }
+            // B. Gula Darah (Tabel: glucose_measure)
+            $glucoseData = DB::table('glucose_measure')
+                            ->where('nik', $nik)
+                            ->latest()
+                            ->first();
 
-            // 3. Hitung Logika (Safe Mode)
-            $bmi = '-';
+            // C. Tensi (Tabel: tension_measure) - INI YANG SEBELUMNYA HILANG DI SERVER
+            $tensiData = DB::table('tension_measure')
+                            ->where('nik', $nik)
+                            ->latest()
+                            ->first();
+
+            // --- 3. OLAH DATA (Sesuai Logic Local) ---
+
+            // >> Logic Berat & Tinggi
+            $tinggi = $weightData->tinggi ?? $weightData->height ?? 0;
+            $berat  = $weightData->berat ?? $weightData->weight ?? 0;
+            $bmi    = '-';
             $bmiKet = '-';
-            $tinggi = '-';
-            $berat = '-';
 
-            if ($weightData) {
-                $tinggi = $weightData->height ?? '-';
-                $berat = $weightData->weight ?? '-';
+            if ($tinggi > 0 && $berat > 0) {
+                $tbM = $tinggi / 100;
+                $bmiVal = $berat / ($tbM * $tbM);
+                $bmi = number_format($bmiVal, 1);
                 
-                if (is_numeric($tinggi) && is_numeric($berat) && $tinggi > 0) {
-                    $heightM = $tinggi / 100;
-                    $bmiVal = $berat / ($heightM * $heightM);
-                    $bmi = number_format($bmiVal, 1);
-                    
-                    if ($bmiVal < 18.5) $bmiKet = 'Kurus';
-                    elseif ($bmiVal < 25) $bmiKet = 'Normal';
-                    elseif ($bmiVal < 30) $bmiKet = 'Gemuk';
-                    else $bmiKet = 'Obesitas';
-                }
+                if ($bmiVal < 18.5) $bmiKet = 'Kurus';
+                elseif ($bmiVal <= 25) $bmiKet = 'Normal';
+                elseif ($bmiVal <= 29.9) $bmiKet = 'Gemuk';
+                else $bmiKet = 'Obesitas';
             }
 
-            $gulaVal = '-';
+            // >> Logic Gula Darah
+            $gulaVal = $glucoseData->glucose ?? $glucoseData->glukosa ?? 0;
             $gulaKet = '-';
-            if ($glucoseData) {
-                $gulaVal = $glucoseData->glucose ?? '-';
-                if (is_numeric($gulaVal)) {
-                    if ($gulaVal < 70) $gulaKet = 'Rendah';
-                    elseif ($gulaVal <= 200) $gulaKet = 'Normal';
-                    else $gulaKet = 'Tinggi';
-                }
+
+            if ($gulaVal > 0) {
+                if ($gulaVal < 70) $gulaKet = 'Rendah';
+                elseif ($gulaVal <= 200) $gulaKet = 'Normal'; 
+                else $gulaKet = 'Tinggi';
             }
 
+            // >> Logic Tensi (b_atas & b_bawah)
+            // Kita cek berbagai kemungkinan nama kolom (b_atas, sistole, systole)
+            $sys = $tensiData->b_atas ?? $tensiData->sistole ?? $tensiData->systole ?? '-';
+            $dia = $tensiData->b_bawah ?? $tensiData->diastole ?? $tensiData->diastole ?? '-';
+            
+            // Pastikan tidak tampil 0 jika data kosong
+            if ($sys === 0 || $sys === '0') $sys = '-';
+            if ($dia === 0 || $dia === '0') $dia = '-';
+            
+            $tensiStr = "$sys/$dia";
+
+            // --- 4. RETURN RESPONSE (Format JSON Sesuai Local) ---
             return response()->json([
-                'nama' => $user->nama_pasien ?? 'Pasien',
-                'tanggal' => now()->format('d-m-Y H:i'),
+                // Identitas dari Server
+                'nama' => $namaPasien,
+                'nik' => $nik,
+                'tanggal' => date('d-m-Y H:i'),
+                
+                // Data Hasil Pengukuran
                 'tinggi' => $tinggi,
                 'berat' => $berat,
                 'bmi' => $bmi,
                 'bmi_ket' => $bmiKet,
+
                 'gula' => $gulaVal,
                 'gula_ket' => $gulaKet,
-                'tensi' => '-', 
+
+                'tensi' => $tensiStr,
+                // Kirim juga data mentah untuk frontend jika butuh pewarnaan
+                'sistole' => $sys,
+                'diastole' => $dia
             ]);
 
-        } catch (\Throwable $mainError) {
-            // Tangkap Error Fatal Controller
-            Log::error("Print Controller Error: " . $mainError->getMessage());
-            return response()->json([
-                'message' => 'Server Error: ' . $mainError->getMessage()
-            ], 500);
+        } catch (\Throwable $e) {
+            Log::error("Print Summary Error: " . $e->getMessage());
+            return response()->json(['message' => 'Server Error', 'detail' => $e->getMessage()], 500);
         }
     }
 }

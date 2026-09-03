@@ -13,7 +13,8 @@ RUN cp .env.example .env
 # Update and install necessary packages (including vim, nano, curl, and git)
 RUN apt-get update && apt-get install -y vim nano curl git
 
-RUN phpaddmod swoole xdebug zip yaml uuid sodium redis pdo_pgsql
+#RUN phpaddmod swoole xdebug zip yaml uuid sodium redis pdo_pgsql
+RUN phpaddmod xdebug zip yaml uuid sodium redis pdo_pgsql
 # Install Node.js and npm (latest)
 RUN curl -fsSL https://deb.nodesource.com/setup_current.x | bash - \
     && apt-get install -y nodejs

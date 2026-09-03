@@ -5,19 +5,15 @@ import { useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function Register({ kabkota, kecamatan, kelurahan, provinsi }) {
+export default function Register({ provinsi }) {
 
-    const [prov, setProv] = useState('')
-    const [kota, setKota] = useState('')
-    const [kec, setKec] = useState('')
-    const [kel, setKel] = useState('')
+    const [kabkota,setKabkota] = useState([]);
+    const [kecamatan,setKecamatan] = useState([]);
+    const [kelurahan,setKelurahan] = useState([]);
 
     const [loading, setLoading] = useState(false)
 
-    const [provinsiPilihan, setProvinsiPilihan] = useState("0")
-    const [kotaPilihan, setKotaPilihan] = useState()
-    const [kecamatanPilihan, setKecamatanPilihan] = useState()
-    const [kelurahaPilihan, setKelurahanPilihan] = useState()
+    const [provinsiPilihan, setProvinsiPilihan] = useState("33");
 
     const { data, setData, post, processing, errors, reset } = useForm({
         nik: null,
@@ -40,42 +36,88 @@ export default function Register({ kabkota, kecamatan, kelurahan, provinsi }) {
         }))
     }
 
-    const getKota = (chosen) => {
-        const kotaRaw = []
-        kabkota.forEach(element => {
-            if (element.kode_parent == chosen) {
-                kotaRaw.push(element)
-            }
-        })
-        setKota(kotaRaw)
-    }
-
-    const getKecamatan = (chosen) => {
-        const kotaRaw = []
-        kecamatan.forEach(element => {
-            if (element.kode_parent == chosen) {
-                kotaRaw.push(element)
-            }
-        })
-        setKec(kotaRaw)
-    }
-
-    const getKelurahan = (chosen) => {
-        const kotaRaw = []
-        kelurahan.forEach(element => {
-            if (element.kode_parent == chosen) {
-                kotaRaw.push(element)
-            }
-        })
-        setKel(kotaRaw)
-    }
-
     useEffect(() => {
-        const selectedProvinsi = provinsi.find((prov) => prov.nama === 'Jawa Tengah');
-        if (selectedProvinsi) {
-            setProvinsiPilihan(selectedProvinsi.kode_provinsi);
+
+        if(provinsi?.length){
+
+            const jateng = provinsi.find(
+                item => item.kode_provinsi === "33"
+            );
+
+            if(jateng){
+
+                setProvinsiPilihan(
+                    jateng.kode_provinsi
+                );
+
+                loadKota(
+                    jateng.kode_provinsi
+                );
+            }
+
         }
-    }, []);
+
+    }, [provinsi]);
+
+    const changeProvinsi = (e)=>{
+
+        const kode = e.target.value;
+
+        setProvinsiPilihan(kode);
+
+        setData(prev=>({
+            ...prev,
+            provinsi:kode,
+            kabkota:'',
+            kecamatan:'',
+            kelurahan:''
+        }));
+
+        setKabkota([]);
+        setKecamatan([]);
+        setKelurahan([]);
+
+
+        loadKota(kode);
+
+    }
+
+    const loadKota = async(kode)=>{
+
+        let res = await axios.get(
+            `/v2/wilayah/kota/${kode}`
+        );
+
+        setKabkota(res.data);
+
+    };
+
+
+    const loadKecamatan = async(kode)=>{
+
+        setKecamatan([]);
+        setKelurahan([]);
+
+        let res = await axios.get(
+            `/v2/wilayah/kecamatan/${kode}`
+        );
+
+        setKecamatan(res.data);
+
+    };
+
+
+    const loadKelurahan = async(kode)=>{
+
+        setKelurahan([]);
+
+        let res = await axios.get(
+            `/v2/wilayah/kelurahan/${kode}`
+        );
+
+        setKelurahan(res.data);
+
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -233,12 +275,25 @@ export default function Register({ kabkota, kecamatan, kelurahan, provinsi }) {
                                 <select
                                     className="w-full border-2 border-green-400 rounded-xl text-xl bg-gray-200"
                                     name="provinsi"
-                                    id="provinsi"
+                                    value={provinsiPilihan}
+                                    onChange={changeProvinsi}
                                 >
-                                    {provinsi.map((docs) => (
-                                        docs.nama == 'Jawa Tengah' ? <option value={docs.kode_provinsi} key={docs.kode_provinsi}>{docs.nama}</option> : null
-                                    ))}
-                                    <option value={33}>default</option>
+
+                                <option value="">
+                                -- Pilih Provinsi --
+                                </option>
+
+                                {
+                                provinsi.map((item)=>(
+                                <option
+                                    key={item.kode_provinsi}
+                                    value={item.kode_provinsi}
+                                >
+                                    {item.nama}
+                                </option>
+                                ))
+                                }
+
                                 </select>
                                 <InputError
                                     className="w-full"
@@ -257,15 +312,27 @@ export default function Register({ kabkota, kecamatan, kelurahan, provinsi }) {
                                     name="kabkota"
                                     id="kabkota"
                                     value={data.kabkota}
-                                    onChange={(e) => {
-                                        changeData(e);
-                                    }}
+                                    onChange={(e)=>{
+                                            changeData(e);
+
+                                            loadKecamatan(
+                                                e.target.value
+                                            );
+
+                                        }}
                                     disabled={provinsiPilihan == "0"}
                                 >
                                     <option value="">-- Pilih Kota --</option>
-                                    {kabkota.map((docs) => (
-                                        docs.kode_parent == provinsiPilihan ? <option value={docs.kode_kota_kab} key={docs.kode_kota_kab}>{docs.nama}</option> : null
-                                    ))}
+                                    {
+                                        kabkota.map((docs)=>(
+                                        <option
+                                        key={docs.kode_kota_kab}
+                                        value={docs.kode_kota_kab}
+                                        >
+                                        {docs.nama}
+                                        </option>
+                                        ))
+                                        }
                                     <option value={3374}>default</option>
                                 </select>
                                 <InputError
@@ -285,15 +352,28 @@ export default function Register({ kabkota, kecamatan, kelurahan, provinsi }) {
                                     name="kecamatan"
                                     id="kecamatan"
                                     value={data.kecamatan}
-                                    onChange={(e) => {
+                                    onChange={(e)=>{
+
                                         changeData(e);
+
+                                        loadKelurahan(
+                                            e.target.value
+                                        );
+
                                     }}
                                     disabled={data.kabkota == ''}
                                 >
                                     <option value="">-- Pilih Kecamatan --</option>
-                                    {kecamatan.map((docs) => (
-                                        docs.kode_parent == data.kabkota ? <option value={docs.kode_kecamatan} key={docs.kode_kecamatan}>{docs.nama}</option> : null
-                                    ))}
+                                    {
+                                        kecamatan.map((docs)=>(
+                                        <option
+                                        key={docs.kode_kecamatan}
+                                        value={docs.kode_kecamatan}
+                                        >
+                                        {docs.nama}
+                                        </option>
+                                        ))
+                                        }
                                     <option value={337401}>default</option>
                                 </select>
                                 <InputError
@@ -323,9 +403,16 @@ export default function Register({ kabkota, kecamatan, kelurahan, provinsi }) {
                                     disabled={data.kecamatan == ''}
                                 >
                                     <option value="">-- Pilih kelurahan --</option>
-                                    {kelurahan.map((docs) => (
-                                        docs.kode_parent == data.kecamatan ? <option value={docs.kode_kelurahan} key={docs.kode_kelurahan}>{docs.nama}</option> : null
-                                    ))}
+                                    {
+                                        kelurahan.map((docs)=>(
+                                        <option
+                                        key={docs.kode_kelurahan}
+                                        value={docs.kode_kelurahan}
+                                        >
+                                        {docs.nama}
+                                        </option>
+                                        ))
+                                        }
                                     <option key={1010101010101} value={33740127}>default</option>
                                 </select>
                                 {/* <input type="text"

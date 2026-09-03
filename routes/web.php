@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\V2\Auth\LoginSessionController;
 use App\Http\Controllers\V2\Auth\RegisterUserController;
 use App\Http\Controllers\V2\HomeController;
+use App\Http\Controllers\V2\WilayahController;
 use App\Http\Controllers\V2\Measure\PatientGlucoseController;
 use App\Http\Controllers\V2\Measure\PatientTensionController;
 use App\Http\Controllers\V2\Measure\PatientWeightController;
@@ -70,6 +71,15 @@ Route::prefix('v2')->group(function () {
         'create',
         'store',
     ]);
+
+    Route::prefix('wilayah')->group(function(){
+        Route::get('/kota/{provinsi}',
+            [WilayahController::class,'kota']);
+        Route::get('/kecamatan/{kota}',
+            [WilayahController::class,'kecamatan']);
+        Route::get('/kelurahan/{kecamatan}',
+            [WilayahController::class,'kelurahan']);
+    });
 
     Route::prefix('measure')->group(function () {
         Route::resource('/weight', PatientWeightController::class)->only([

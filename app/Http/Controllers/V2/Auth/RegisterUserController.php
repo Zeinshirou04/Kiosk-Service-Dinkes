@@ -4,6 +4,8 @@ namespace App\Http\Controllers\V2\Auth;
 
 use Inertia\Inertia;
 use App\Models\Patient\Patients;
+// use App\Models\MasterKelurahan;
+use App\Models\MasterProvinsi;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
 use Illuminate\Database\QueryException;
@@ -24,21 +26,50 @@ class RegisterUserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+    // public function create()
+    // {
+    //     $kabkota = $this->getCitiesFromApi('kabkota', '/migrasi/sip/masterkotakabsatset/');
+    //     // dd($kabkota);
+    //     $kecamatan = $this->getCitiesFromApi('kecamatan', '/migrasi/sip/masterkecamatansatset/');
+    //     // dd($kecamatan);
+    //     // $kelurahan_data = $this->getCitiesFromApi('kelurahan', '/migrasi/sip/masterkelurahansatset/');
+    //     $kelurahan_data = MasterKelurahan::get()->toArray();
+    //     $kelurahan = [
+    //         "status"=>"success",
+    //         "message"=>"Data berhasil diambil",
+    //         "data"=> $kelurahan_data
+    //     ];
+
+    //     // $kelurahan = MasterKelurahan::all();
+
+    //     // dd($kelurahan);
+    //     $provinsi = $this->getCitiesFromApi('provinsi', '/migrasi/sip/masterprovinsisatset/');
+    //     // dd($provinsi);
+
+    //     return Inertia::render('V2/Form/Register', compact('kabkota', 'kecamatan', 'kelurahan', 'provinsi'));
+    // }
     public function create()
     {
-        $kabkota = $this->getCitiesFromApi('kabkota', '/migrasi/sip/masterkotakabsatset/');
-        $kecamatan = $this->getCitiesFromApi('kecamatan', '/migrasi/sip/masterkecamatansatset/');
-        $kelurahan = $this->getCitiesFromApi('kelurahan', '/migrasi/sip/masterkelurahansatset/');
-        $provinsi = $this->getCitiesFromApi('provinsi', '/migrasi/sip/masterprovinsisatset/');
+        $provinsi = MasterProvinsi::select(
+                'kode_provinsi',
+                'nama'
+            )
+            ->orderBy('nama')
+            ->get();
 
-        return Inertia::render('V2/Form/Register', compact('kabkota', 'kecamatan', 'kelurahan', 'provinsi'));
+            // dd($provinsi);
+
+
+        return Inertia::render('V2/Form/Register', [
+            'provinsi' => $provinsi
+        ]);
     }
 
     public function getCitiesFromApi(String $cacheName, String $url)
     {
         return Cache::remember($cacheName, self::CACHE_TIMEOUT, function () use ($url) {
             try {
-                $response = Http::timeout(60)->get($this->cityEndpoint . $url);
+                $response = Http::timeout(120)->get($this->cityEndpoint . $url);
                 return $response->successful() ? $response->json() : [];
             } catch (\Throwable $th) {
                 return [];

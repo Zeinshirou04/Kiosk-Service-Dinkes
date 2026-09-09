@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+    kiosk-akm:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: kiosk-akm
+
+        restart: always
+        working_dir: /var/www/html
+        volumes:
+            - /var/project/kiosk-akm:/var/www/html
+            - /var/project/kiosk-akm/storage:/var/www/html/storage
+            - backup_data:/var/www/html/backup
+        ports:
+            - "7021:80"
+        networks:
+            - kiosk-akm_network
+
+networks:
+    kiosk-akm_network:
+        external: true
+
+volumes:
+    backup_data:

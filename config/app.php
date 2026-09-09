@@ -123,4 +123,15 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | API Key
+    |--------------------------------------------------------------------------
+    |
+    | This key is used to authenticate API requests.
+    |
+    */
+
+    'api_key' => env('API_KOPER'),
+
 ];
